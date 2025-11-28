@@ -1,217 +1,124 @@
-# DocSync 🚀
+# DocSync
 
 <div align="center">
 
 ![Python](https://img.shields.io/badge/python-v3.9+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Status](https://img.shields.io/badge/status-beta-orange.svg)
+![Status](https://img.shields.io/badge/status-v0.2.0-blue.svg)
 ![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)
 
-**Advanced technical documentation synchronization and management system**
+**AI-Powered Documentation Agent & Sync Tool**
 
-*Bidirectional sync between local files and Notion with AI-enhanced processing*
+*Bidirectional synchronization, multi-LLM support, and Model Context Protocol (MCP) server.*
 
 [🇧🇷 Português](./docs/pt-br/README.md) | 🇺🇸 English
 
 </div>
 
+---
+
+## 📋 Overview
+
+DocSync is a developer-first tool designed to manage, synchronize, and improve technical documentation. It goes beyond simple file syncing by integrating **Large Language Models (LLMs)** directly into your workflow, acting as an intelligent agent that understands your project.
+
+With **v0.2.0**, DocSync introduces an **MCP Server**, allowing external agents (like Claude Desktop or IDEs) to use DocSync as a specialized tool for reading, analyzing, and improving your documentation contextually.
+
 ## ✨ Key Features
 
-🔄 **Bidirectional Sync**: Keep local files and Notion always in sync  
-🤖 **AI Multi-Provider**: Support for OpenAI, Claude, and Gemini  
-🔌 **MCP Server**: Model Context Protocol for external agent integration  
-📊 **ESG Templates**: Flexible system for professional reports and documentation  
-⚡ **Real-time**: Live monitoring and synchronization  
-🛡️ **Auto Backup**: Robust versioning and backup system  
-🎨 **Rich CLI**: Intuitive interface with Rich for better UX  
+- **🤖 AI Multi-Provider**: Built-in support for OpenAI, Anthropic (Claude), and Google (Gemini).
+- **🔌 MCP Server**: Exposes project documentation as tools (`read_doc`, `improve_doc`) via Model Context Protocol.
+- **🔄 Bidirectional Sync**: Keep local Markdown files in sync with Notion (Beta).
+- **🛠️ Developer CLI**: Rich command-line interface for all operations.
+- **📊 Quality Analysis**: Automated checks for documentation structure and quality.
+- **🏗️ Extensible Architecture**: Plugin-ready design for new providers and integrations.
 
-## 📊 Market Potential
-
-- **TAM**: $45+ billion (technical documentation market)
-- **MVP Timeline**: 4-6 months development  
-- **Projected ROI**: 450-1,200% over 5 years
-
-📋 [View complete market analysis](./ANALISE_MERCADO_VIABILIDADE.md)
-
-## 🚀 Quick Installation
+## 🚀 Installation
 
 ```bash
-# Via pip (recommended)
+# Install via pip
 pip install docsync
 
-# Or local development
+# Or for local development
 git clone https://github.com/SH1W4/docsync.git
 cd docsync
 pip install -e ".[dev]"
 ```
 
-## 💡 Quick Start
+## 💡 Usage
 
-### 1. Basic Setup
-```python
-from docsync import DocSync
+### 1. AI Documentation Improvement
 
-# Initialize project
-sync = DocSync()
-sync.configure()
-```
+Analyze and improve your docs using your preferred LLM provider.
 
-### 2. AI-Powered Documentation Improvement
 ```bash
-# Improve documentation with AI (OpenAI by default)
+# Default (OpenAI)
 docsync improve README.md
 
-# Use Claude
-docsync improve README.md --provider claude
+# Use Claude (Anthropic)
+docsync improve docs/api.md --provider claude --model claude-3-5-sonnet-20241022
 
-# Use Gemini with specific model
-docsync improve README.md --provider gemini --model gemini-2.0-flash-exp
+# Use Gemini (Google)
+docsync improve CONTRIBUTING.md --provider gemini
 ```
 
-**Environment Variables:**
+**Configuration**: Set the corresponding environment variable for your provider:
+- `OPENAI_API_KEY`
+- `ANTHROPIC_API_KEY`
+- `GOOGLE_API_KEY`
+
+### 2. MCP Server (Agent Integration)
+
+Start the MCP server to allow external agents to interface with your documentation.
+
 ```bash
-# OpenAI
-export OPENAI_API_KEY="sk-..."
-
-# Anthropic Claude
-export ANTHROPIC_API_KEY="sk-ant-..."
-
-# Google Gemini
-export GOOGLE_API_KEY="AI..."
-```
-
-### 3. MCP Server for External Agents
-```bash
-# Start MCP server (for Claude Desktop, IDEs, etc.)
 docsync serve
+```
 
-# Connect from Claude Desktop - add to claude_desktop_config.json:
+**Claude Desktop Configuration**:
+Add this to your `claude_desktop_config.json`:
+
+```json
 {
   "mcpServers": {
     "docsync": {
       "command": "docsync",
-      "args": ["serve"]
+      "args": ["serve"],
+      "cwd": "/path/to/your/project"
     }
   }
 }
 ```
 
-### 4. Notion Integration (Coming Soon)
-```python
-from docsync.integrations.notion import NotionBridge, NotionConfig
+### 3. Synchronization (Beta)
 
-config = NotionConfig(
-    token='your_notion_token',
-    workspace_id='your_workspace'
-)
-
-bridge = NotionBridge(config)
-await bridge.sync()
-```
-
-### 3. Interactive CLI
 ```bash
-# Sync directory
+# Sync local docs directory
 docsync sync ./docs --config config.yaml
-
-# Generate ESG report
-docsync generate --template esg-report --output ./reports
 ```
 
-## 🧩 Supported Integrations
+## 🏗️ Architecture
 
-| Platform | Status | Description |
-|----------|--------|-------------|
-| 🤖 **OpenAI** | ✅ Complete | GPT-4o-mini, GPT-4o for documentation analysis |
-| 🤖 **Claude** | ✅ Complete | Claude 3.5 Haiku/Sonnet for AI improvements |
-| 🤖 **Gemini** | ✅ Complete | Google Gemini 2.0 Flash for content generation |
-| 🔌 **MCP** | ✅ Complete | Model Context Protocol server for agents |
-| 🎯 **Notion** | 🚧 Beta | Bidirectional sync with pages and databases |
-| 📝 **Markdown** | ✅ Complete | Advanced markdown file processing |
-| 🔗 **Git** | ✅ Complete | Repository integration for versioning |
-| 🌐 **APIs** | 🚧 Beta | Automatic REST API documentation |
+DocSync follows a clean, layered architecture:
 
-## 📚 Documentation
+- **Presentation**: CLI (Click/Rich)
+- **Application**: MCP Server, Sync Engine
+- **Domain**: LLM Providers (Abstracted), Document Models
+- **Infrastructure**: File System, API Clients
 
-- 🏃‍♂️ [**Quick Start Guide**](./QUICKSTART.md)
-- 🎯 [**Notion Integration**](./examples/notion/GUIDE.md)
-- 🤝 [**Contributing Guide**](./CONTRIBUTING.md)
-- 📋 [**Changelog**](./CHANGELOG.md)
-- 💼 [**Business Analysis**](./ANALISE_MERCADO_VIABILIDADE.md)
-
-## 🛠️ For Developers
-
-### Code Quality
-```bash
-# Formatting and linting
-black . && isort . && flake8
-
-# Tests with coverage
-pytest --cov=docsync --cov-report=html
-
-# Type checking
-mypy src/
-```
-
-### Project Structure
-```
-docsync/
-├── src/docsync/          # Main code
-│   ├── core/             # Sync engine
-│   ├── integrations/     # Integrations (Notion, etc.)
-│   ├── templates/        # Template system
-│   └── utils/            # Utilities and filters
-├── templates/            # Document templates
-├── examples/             # Practical examples
-└── tests/                # Unit tests
-```
+See [ARCHITECTURE.json](./ARCHITECTURE.json) for a detailed breakdown.
 
 ## 🤝 Contributing
 
-Contributions are very welcome! This project has the potential to positively impact the developer community.
-
-1. 🍴 Fork the project
-2. 🌟 Create your feature branch
-3. ✅ Add tests
-4. 📝 Update documentation
-5. 🚀 Open a Pull Request
-
-See the [complete contribution guide](./CONTRIBUTING.md).
-
-## 🎯 Roadmap
-
-### ✅ v0.2.0 (Released - November 2025)
-- ✅ Multi-LLM provider support (OpenAI, Claude, Gemini)
-- ✅ MCP server for external agents
-- ✅ AI-powered documentation improvement
-
-### v0.3.0 (Q1 2025)
-- 🔗 GitHub/GitLab integration
-- 🧠 Local LLM support (Ollama)
-- 🧩 Plugin system
-
-### v0.4.0 (Q2 2025)
-- 🌐 Web interface
-- 📊 Analytics dashboard
-- 👥 Multi-tenant support
-
-### v1.0.0 (Q3 2025)
-- 🏢 Enterprise features
-- 📞 Professional support
-- 🚀 Production release
+We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for details on how to set up your development environment and submit PRs.
 
 ## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🌟 Acknowledgments
-
-Built with ❤️ for the developer community. If this project helped you, consider giving it a ⭐!
-
 ---
 
 <div align="center">
 
-**[🏠 Homepage](https://github.com/SH1W4/docsync) • [📖 Docs](https://github.com/SH1W4/docsync#readme) • [🐛 Issues](https://github.com/SH1W4/docsync/issues) • [💬 Discussions](https://github.com/SH1W4/docsync/discussions)**
+**[🏠 Homepage](https://github.com/SH1W4/docsync) • [🐛 Issues](https://github.com/SH1W4/docsync/issues) • [💬 Discussions](https://github.com/SH1W4/docsync/discussions)**
 
 </div>
