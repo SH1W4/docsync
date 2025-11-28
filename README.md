@@ -18,7 +18,8 @@
 ## ✨ Key Features
 
 🔄 **Bidirectional Sync**: Keep local files and Notion always in sync  
-🤖 **AI Processing**: Automatic documentation analysis and improvement  
+🤖 **AI Multi-Provider**: Support for OpenAI, Claude, and Gemini  
+🔌 **MCP Server**: Model Context Protocol for external agent integration  
 📊 **ESG Templates**: Flexible system for professional reports and documentation  
 ⚡ **Real-time**: Live monitoring and synchronization  
 🛡️ **Auto Backup**: Robust versioning and backup system  
@@ -55,7 +56,47 @@ sync = DocSync()
 sync.configure()
 ```
 
-### 2. Notion Integration
+### 2. AI-Powered Documentation Improvement
+```bash
+# Improve documentation with AI (OpenAI by default)
+docsync improve README.md
+
+# Use Claude
+docsync improve README.md --provider claude
+
+# Use Gemini with specific model
+docsync improve README.md --provider gemini --model gemini-2.0-flash-exp
+```
+
+**Environment Variables:**
+```bash
+# OpenAI
+export OPENAI_API_KEY="sk-..."
+
+# Anthropic Claude
+export ANTHROPIC_API_KEY="sk-ant-..."
+
+# Google Gemini
+export GOOGLE_API_KEY="AI..."
+```
+
+### 3. MCP Server for External Agents
+```bash
+# Start MCP server (for Claude Desktop, IDEs, etc.)
+docsync serve
+
+# Connect from Claude Desktop - add to claude_desktop_config.json:
+{
+  "mcpServers": {
+    "docsync": {
+      "command": "docsync",
+      "args": ["serve"]
+    }
+  }
+}
+```
+
+### 4. Notion Integration (Coming Soon)
 ```python
 from docsync.integrations.notion import NotionBridge, NotionConfig
 
@@ -81,11 +122,14 @@ docsync generate --template esg-report --output ./reports
 
 | Platform | Status | Description |
 |----------|--------|-------------|
-| 🎯 **Notion** | ✅ Complete | Bidirectional sync with pages and databases |
+| 🤖 **OpenAI** | ✅ Complete | GPT-4o-mini, GPT-4o for documentation analysis |
+| 🤖 **Claude** | ✅ Complete | Claude 3.5 Haiku/Sonnet for AI improvements |
+| 🤖 **Gemini** | ✅ Complete | Google Gemini 2.0 Flash for content generation |
+| 🔌 **MCP** | ✅ Complete | Model Context Protocol server for agents |
+| 🎯 **Notion** | 🚧 Beta | Bidirectional sync with pages and databases |
 | 📝 **Markdown** | ✅ Complete | Advanced markdown file processing |
 | 🔗 **Git** | ✅ Complete | Repository integration for versioning |
 | 🌐 **APIs** | 🚧 Beta | Automatic REST API documentation |
-| 📊 **Analytics** | 📋 Planned | Documentation quality and usage metrics |
 
 ## 📚 Documentation
 
@@ -136,12 +180,17 @@ See the [complete contribution guide](./CONTRIBUTING.md).
 
 ## 🎯 Roadmap
 
-### v0.2.0 (Q1 2025)
+### ✅ v0.2.0 (Released - November 2025)
+- ✅ Multi-LLM provider support (OpenAI, Claude, Gemini)
+- ✅ MCP server for external agents
+- ✅ AI-powered documentation improvement
+
+### v0.3.0 (Q1 2025)
 - 🔗 GitHub/GitLab integration
-- 🧠 Enhanced AI for document analysis
+- 🧠 Local LLM support (Ollama)
 - 🧩 Plugin system
 
-### v0.3.0 (Q2 2025)
+### v0.4.0 (Q2 2025)
 - 🌐 Web interface
 - 📊 Analytics dashboard
 - 👥 Multi-tenant support
