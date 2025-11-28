@@ -5,6 +5,34 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [0.2.0] - 2025-11-28
+
+### Added
+- 🤖 **AI Integration**: Real LLM support with multiple providers
+  - OpenAI (GPT-4o-mini, GPT-4o)
+  - Anthropic Claude (3.5 Haiku, 3.5 Sonnet)
+  - Google Gemini (2.0 Flash)
+- 🔌 **MCP Server**: Model Context Protocol integration
+  - `list_docs`: List all markdown files
+  - `read_doc`: Read document content
+  - `improve_doc`: AI-powered documentation improvements
+  - `get_stats`: Project statistics
+- 🎨 **CLI Enhancements**:
+  - `docsync improve` command with provider selection (`--provider` flag)
+  - `docsync serve` command to start MCP server
+- 🏗️ **Architecture**:
+  - `LLMProvider` interface for extensible AI support
+  - Modular provider system for easy extension
+
+### Changed
+- 📦 Updated dependencies: `openai`, `anthropic`, `google-generativeai`, `mcp`
+
+### Technical Features
+- Full support for external agents (Claude Desktop, IDEs) via MCP
+- Provider-agnostic AI interface
+- Async MCP server with stdio transport
+
 ## [Unreleased]
 
 ### Planned
@@ -82,6 +110,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ---
 
 **Links:**
-- [Unreleased]: https://github.com/NEO-SH1W4/docsync/compare/v0.1.0...HEAD
-- [0.1.0]: https://github.com/NEO-SH1W4/docsync/releases/tag/v0.1.0
+- [Unreleased]: https://github.com/SH1W4/docsync/compare/v0.2.0...HEAD
+- [0.2.0]: https://github.com/SH1W4/docsync/releases/tag/v0.2.0
+- [0.1.0]: https://github.com/SH1W4/docsync/releases/tag/v0.1.0
 

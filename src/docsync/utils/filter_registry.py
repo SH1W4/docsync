@@ -147,3 +147,22 @@ class FilterRegistry:
 
 # Instância global do registro
 filter_registry = FilterRegistry()
+
+
+def get_registered_filters() -> dict[str, Callable]:
+    """Obtém todos os filtros registrados.
+    
+    Returns:
+        Dicionário com todos os filtros registrados
+    """
+    return filter_registry._filters.copy()
+
+
+def register_filter(name: str, filter_func: Callable) -> None:
+    """Registra um novo filtro globalmente.
+    
+    Args:
+        name: Nome do filtro
+        filter_func: Função de filtro
+    """
+    filter_registry.register(name, filter_func)
