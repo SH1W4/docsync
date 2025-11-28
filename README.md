@@ -2,6 +2,8 @@
 
 <div align="center">
 
+![DocSync Logo](./assets/logo.png)
+
 ![Python](https://img.shields.io/badge/python-v3.9+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Status](https://img.shields.io/badge/status-v0.2.0-blue.svg)
