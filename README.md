@@ -40,7 +40,7 @@
 pip install docsync
 
 # Or local development
-git clone https://github.com/NEO-SH1W4/docsync.git
+git clone https://github.com/SH1W4/docsync.git
 cd docsync
 pip install -e ".[dev]"
 ```
@@ -212,6 +212,6 @@ Built with ❤️ for the developer community. If this project helped you, consi
 
 <div align="center">
 
-**[🏠 Homepage](https://github.com/NEO-SH1W4/docsync) • [📖 Docs](https://github.com/NEO-SH1W4/docsync#readme) • [🐛 Issues](https://github.com/NEO-SH1W4/docsync/issues) • [💬 Discussions](https://github.com/NEO-SH1W4/docsync/discussions)**
+**[🏠 Homepage](https://github.com/SH1W4/docsync) • [📖 Docs](https://github.com/SH1W4/docsync#readme) • [🐛 Issues](https://github.com/SH1W4/docsync/issues) • [💬 Discussions](https://github.com/SH1W4/docsync/discussions)**
 
 </div>
