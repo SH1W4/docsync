@@ -21,9 +21,13 @@
 
 ## 📋 Overview
 
-DocSync is a developer-first tool designed to manage, synchronize, and improve technical documentation. It goes beyond simple file syncing by integrating **Large Language Models (LLMs)** directly into your workflow, acting as an intelligent agent that understands your project.
+DocSync is a developer-first tool designed to manage, synchronize, and improve technical documentation. It goes beyond simple file syncing by integrating **Large Language Models (LLMs)** directly into your workflow.
 
-With **v0.2.0**, DocSync introduces an **MCP Server**, allowing external agents (like Claude Desktop or IDEs) to use DocSync as a specialized tool for reading, analyzing, and improving your documentation contextually.
+![DocSync CLI Preview](./assets/cli_preview.png)
+
+With **v0.2.0**, DocSync introduces an **MCP Server**, allowing external agents (like Claude Desktop or IDEs) to use DocSync as a specialized tool.
+
+> 🏗️ **See the [Architecture Diagram](./ARCHITECTURE.md) for technical details.**
 
 ## ✨ Key Features
 
