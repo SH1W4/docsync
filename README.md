@@ -1,130 +1,117 @@
-# DocSync
+# DocSync: Agentic Documentation Infrastructure
 
 <div align="center">
 
-![DocSync Logo](./assets/logo.png)
+![DocSync Banner](https://img.shields.io/badge/DOCSYNC-AGENTIC_DOCUMENTATION-00ff41?style=for-the-badge&logo=googledocs&logoColor=black)
 
-![Python](https://img.shields.io/badge/python-v3.9+-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Status](https://img.shields.io/badge/status-v0.2.0-blue.svg)
-![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)
+[![CI](https://github.com/SH1W4/docsync/actions/workflows/ci.yml/badge.svg)](https://github.com/SH1W4/docsync/actions)
+[![PyPI version](https://badge.fury.io/py/docsync.svg)](https://badge.fury.io/py/docsync)
+[![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
+[![MCP Ready](https://img.shields.io/badge/MCP-READY-00ff41)](https://modelcontextprotocol.io)
 
-**AI-Powered Documentation Agent & Sync Tool**
+**Turn static documentation into live, agent-readable knowledge.**
+*Synchronize, Validate, and Enforce documentation quality using LLMs.*
 
-*Bidirectional synchronization, multi-LLM support, and Model Context Protocol (MCP) server.*
-
-[🇧🇷 Português](./docs/pt-br/README.md) | 🇺🇸 English
+[🇧🇷 Português](./docs/pt-br/README.md) | **🇺🇸 English**
 
 </div>
 
 ---
 
-## 📋 Overview
+## ⚡ The Problem
+In modern software development, **documentation rots faster than code**. 
+Developers hate writing it, and AI Agents hallucinate when reading outdated files.
 
-DocSync is a developer-first tool designed to manage, synchronize, and improve technical documentation. It goes beyond simple file syncing by integrating **Large Language Models (LLMs)** directly into your workflow.
+## 🛡️ The Solution: DocSync
+**DocSync** is not just a linter. It is an **Agentic Infrastructure Tool** that treats your documentation as a living database. It sits between your codebase and your LLMs, ensuring that every Markdown file is accurate, up-to-date, and semantically structured for retrieval.
 
-![DocSync CLI Preview](./assets/cli_preview.png)
+> "Don't let your Agent read garbage. Feed it DocSync."
 
-With **v0.2.0**, DocSync introduces an **MCP Server**, allowing external agents (like Claude Desktop or IDEs) to use DocSync as a specialized tool.
+---
 
-> 🏗️ **See the [Architecture Diagram](./ARCHITECTURE.md) for technical details.**
+## 🔥 Key Capabilities
 
-## ✨ Key Features
+### 🔌 1. Native MCP Server (Model Context Protocol)
+DocSync exposes your entire documentation knowledge base as a structured **MCP Server**.
+*   **For Claude/Cursor:** Connect DocSync to your assistant. It can now "read", "search", and "patch" your docs autonomously.
+*   **No API Gluing:** It just works with any MCP-compliant client.
 
-- **🤖 AI Multi-Provider**: Built-in support for OpenAI, Anthropic (Claude), and Google (Gemini).
-- **🔌 MCP Server**: Exposes project documentation as tools (`read_doc`, `improve_doc`) via Model Context Protocol.
-- **🔄 Bidirectional Sync**: Keep local Markdown files in sync with Notion (Beta).
-- **🛠️ Developer CLI**: Rich command-line interface for all operations.
-- **📊 Quality Analysis**: Automated checks for documentation structure and quality.
-- **🏗️ Extensible Architecture**: Plugin-ready design for new providers and integrations.
+### 🧠 2. AI-Driven Semantic Validation
+Forget regex. DocSync uses **LLMs (OpenAI, Anthropic, Gemini)** to understand the *content* of your docs.
+*   *Does this README match what `main.py` actually does?*
+*   *Is the tone consistent across all 50 files?*
+*   *Are these installation steps actually executable?*
 
-## 🚀 Installation
+### 🔄 3. Multi-Provider Intelligence
+Agnostic by design. Swap brains on the fly:
+*   `--provider openai` (GPT-4o for deep logic)
+*   `--provider anthropic` (Claude 3.5 Sonnet for huge context windows)
+*   `--provider gemini` (Gemini Pro for speed)
 
+---
+
+## 🚀 Quick Start (Production Ready)
+
+### Installation
 ```bash
-# Install via pip
 pip install docsync
-
-# Or for local development
-git clone https://github.com/SH1W4/docsync.git
-cd docsync
-pip install -e ".[dev]"
 ```
 
-## 💡 Usage
-
-### 1. AI Documentation Improvement
-
-Analyze and improve your docs using your preferred LLM provider.
-
+### 1-Click Optimization
+Improve your README instantly using your preferred LLM:
 ```bash
-# Default (OpenAI)
-docsync improve README.md
-
-# Use Claude (Anthropic)
-docsync improve docs/api.md --provider claude --model claude-3-5-sonnet-20241022
-
-# Use Gemini (Google)
-docsync improve CONTRIBUTING.md --provider gemini
+export OPENAI_API_KEY="sk-..."
+docsync improve README.md --instruction "Make it sound enterprise-ready"
 ```
 
-**Configuration**: Set the corresponding environment variable for your provider:
-- `OPENAI_API_KEY`
-- `ANTHROPIC_API_KEY`
-- `GOOGLE_API_KEY`
-
-### 2. MCP Server (Agent Integration)
-
-Start the MCP server to allow external agents to interface with your documentation.
-
+### Launch MCP Agent
+Turn your folder into a knowledge server:
 ```bash
-docsync serve
+docsync serve --port 8000
 ```
 
-**Claude Desktop Configuration**:
-Add this to your `claude_desktop_config.json`:
+---
 
-```json
-{
-  "mcpServers": {
-    "docsync": {
-      "command": "docsync",
-      "args": ["serve"],
-      "cwd": "/path/to/your/project"
-    }
-  }
-}
+## 🏗️ Architecture & Design
+
+DocSync is built with **Resilience** and **Extensibility** in mind.
+
+*   **Core:** Python 3.9+ with strict typing (MyPy).
+*   **Interface:** Rich CLI for humans, JSON-RPC for Agents.
+*   **Pattern:** Adapter Pattern for LLMs (easy to add Llama 3 or Mistral).
+
+```mermaid
+graph LR
+    A[Human Dev] -->|CLI Commands| B[DocSync Core]
+    C[AI Agent / IDE] -->|MCP Protocol| B
+    B -->|Read/Write| D[Markdown Files]
+    B -->|Analyze| E[LLM Provider API]
 ```
 
-### 3. Synchronization (Beta)
+---
 
-```bash
-# Sync local docs directory
-docsync sync ./docs --config config.yaml
-```
+## 💼 Enterprise Use Cases
 
-## 🏗️ Architecture
+| Persona | Benefit |
+| :--- | :--- |
+| **CTOs** | Ensure compliance and documentation standards across 100+ repos. |
+| **DevOps** | Auto-generate changelogs and deployment guides during CI/CD. |
+| **Solo Devs** | Have a "Documentation Co-pilot" that writes the boring stuff for you. |
 
-DocSync follows a clean, layered architecture:
-
-- **Presentation**: CLI (Click/Rich)
-- **Application**: MCP Server, Sync Engine
-- **Domain**: LLM Providers (Abstracted), Document Models
-- **Infrastructure**: File System, API Clients
-
-See [ARCHITECTURE.json](./ARCHITECTURE.json) for a detailed breakdown.
+---
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for details on how to set up your development environment and submit PRs.
+We are building the standard for **AI-Augmented Documentation**. 
+Contributions are welcome for:
+*   New MCP Tools
+*   Additional LLM Providers (Ollama, Groq)
+*   Integrations (Notion, Confluence)
 
-## 📜 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) to join the swarm.
 
 ---
 
 <div align="center">
-
-**[🏠 Homepage](https://github.com/SH1W4/docsync) • [🐛 Issues](https://github.com/SH1W4/docsync/issues) • [💬 Discussions](https://github.com/SH1W4/docsync/discussions)**
-
+    <b>Built by <a href="https://github.com/SH1W4">SH1W4</a> // Symbeon Labs</b>
 </div>
