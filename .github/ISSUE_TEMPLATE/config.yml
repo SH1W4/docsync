@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Join the Discussion
+    url: https://github.com/SH1W4/docsync/discussions
+    about: Please ask and answer questions here.
+  - name: 🔐 Security Vulnerability
+    url: https://github.com/SH1W4/docsync/blob/main/SECURITY.md
+    about: Please report security vulnerabilities privately.
