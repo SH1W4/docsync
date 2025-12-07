@@ -126,6 +126,43 @@ def serve(path: Path) -> None:
         raise click.Abort
 
 
+@cli.command()
+@click.argument(
+    "path",
+    type=click.Path(exists=True, file_okay=False, dir_okay=True, path_type=Path),
+    default=".",
+)
+@click.option(
+    "--output",
+    "-o",
+    type=click.Path(file_okay=True, dir_okay=False, path_type=Path),
+    default="paper.yaml",
+    help="Output configuration file",
+)
+def paper(path: Path, output: Path) -> None:
+    """Generate Academic Paper configuration from documentation."""
+    try:
+        from docsync.integrations.paper_converter import PaperConverter
+        import yaml
+        
+        console.print(f"📄 Analyzing documentation in [bold]{path.resolve()}[/bold]...", style="blue")
+        
+        converter = PaperConverter(path)
+        config = converter.to_config()
+        
+        with open(output, "w", encoding="utf-8") as f:
+            yaml.dump(config, f, sort_keys=False, allow_unicode=True)
+            
+        console.print(f"✅ Configuration generated: [bold]{output}[/bold]", style="green")
+        console.print("\nTo generate the PDF, run:", style="dim")
+        console.print(f"  paper-gen generate {output} --template ieee", style="bold white")
+        
+    except Exception as e:
+        console.print(f"❌ Error: {e}", style="red")
+        raise click.Abort
+
+
+
 def main() -> None:
     """Main entry point."""
     try:
