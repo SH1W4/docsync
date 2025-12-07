@@ -1,0 +1,80 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="100%" height="100%" rx="10" ry="10" fill="#0d1117" />
+
+  <!-- Window Controls -->
+  <circle cx="20" cy="20" r="6" fill="#ff5f56"/>
+  <circle cx="40" cy="20" r="6" fill="#ffbd2e"/>
+  <circle cx="60" cy="20" r="6" fill="#27c93f"/>
+
+  <!-- Content Group -->
+  <g transform="translate(30, 60)" font-family="monospace" font-size="14" fill="#c9d1d9">
+    
+    <!-- Header Status with blinking dots -->
+    <text x="0" y="0" font-size="12" fill="#8b949e">Subject: SH1W4</text>
+    
+    <text x="200" y="0" font-size="12" fill="#00ff41">
+      ● SYSTEM ONLINE
+      <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+    </text>
+    
+    <text x="400" y="0" font-size="12" fill="#bd93f9">
+      ● NEURAL LINK ACTIVE
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+    </text>
+
+    <!-- Code Block with Reveal Animation -->
+    <g transform="translate(0, 40)">
+      <!-- Line 1 -->
+      <text y="0">
+        <tspan fill="#ff7b72">class</tspan> <tspan fill="#d2a8ff">SymbioticEntity</tspan> <tspan fill="#ff7b72">extends</tspan> <tspan fill="#d2a8ff">Intelligence</tspan> {
+        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.5s" fill="freeze"/>
+      </text>
+      
+      <!-- Line 2 -->
+      <text y="25">
+        &nbsp;&nbsp;<tspan fill="#ff7b72">constructor</tspan>() {
+        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="1.5s" fill="freeze"/>
+      </text>
+      
+      <!-- Line 3 -->
+      <text y="50">
+        &nbsp;&nbsp;&nbsp;&nbsp;<tspan fill="#ff7b72">this</tspan>.origin = <tspan fill="#a5d6ff">"Symbeon Labs"</tspan>;
+        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="2.5s" fill="freeze"/>
+      </text>
+      
+      <!-- Line 4 -->
+      <text y="75">
+        &nbsp;&nbsp;&nbsp;&nbsp;<tspan fill="#ff7b72">this</tspan>.mission = <tspan fill="#a5d6ff">"Evolve Digital Infrastructure"</tspan>;
+        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="3.5s" fill="freeze"/>
+      </text>
+
+      <!-- Line 5 -->
+      <text y="100">
+        &nbsp;&nbsp;&nbsp;&nbsp;<tspan fill="#ff7b72">this</tspan>.status = <tspan fill="#00ff41" font-weight="bold">"MUTATING..."</tspan>;
+        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="4.5s" fill="freeze"/>
+      </text>
+      
+      <!-- Closing Braces -->
+      <text y="125">
+        &nbsp;&nbsp;}
+        <animate attributeName="opacity" from="0" to="1" dur="0.1s" begin="5.5s" fill="freeze"/>
+      </text>
+       <text y="150">
+        }
+        <animate attributeName="opacity" from="0" to="1" dur="0.1s" begin="5.6s" fill="freeze"/>
+      </text>
+    </g>
+
+    <!-- Interactive Terminal Line with Blink -->
+    <g transform="translate(0, 240)">
+      <text fill="#00ff41">$ sh1w4 --initiate-protocol</text>
+      <rect x="230" y="-10" width="10" height="15" fill="#00ff41">
+        <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+  </g>
+  
+  <!-- Border -->
+  <rect x="1" y="1" width="798" height="398" fill="none" stroke="#30363d" rx="10" ry="10"/>
+</svg>
