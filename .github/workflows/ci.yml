@@ -192,7 +192,7 @@ jobs:
           
       - name: 📄 Upload Security Report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: security-report
           path: bandit-report.json
@@ -227,7 +227,7 @@ jobs:
           twine check dist/*
           
       - name: 📦 Upload Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: dist-packages
           path: dist/
