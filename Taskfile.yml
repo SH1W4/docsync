@@ -1,0 +1,67 @@
+version: '3'
+
+tasks:
+  default:
+    desc: List available tasks
+    cmds:
+      - task --list
+
+  install:
+    desc: Install dependencies
+    cmds:
+      - pip install -r requirements.txt
+      - pip install -r requirements-dev.txt
+
+  test:
+    desc: Run tests with pytest
+    cmds:
+      - pytest tests/ -v
+
+  coverage:
+    desc: Run tests with coverage
+    cmds:
+      - pytest --cov=docsync tests/
+      - coverage report
+
+  lint:
+    desc: Run code quality checks (Ruff & Mypy)
+    cmds:
+      - ruff check .
+      - mypy src/docsync
+
+  format:
+    desc: Auto-format code with Ruff
+    cmds:
+      - ruff format .
+      - ruff check . --fix
+
+  clean:
+    desc: Remove cache and temporary files
+    cmds:
+      - cmd /c "del /s /q __pycache__ .pytest_cache .mypy_cache .ruff_cache build dist *.egg-info"
+    ignore_error: true
+
+  run:
+    desc: Run DocSync CLI help
+    cmds:
+      - python -m docsync --help
+
+  serve:
+    desc: Start MCP Server
+    cmds:
+      - docsync serve
+
+  build:
+    desc: Build Python package
+    cmds:
+      - python -m build
+
+  publish-test:
+    desc: Publish to TestPyPI
+    cmds:
+      - twine upload --repository testpypi dist/*
+
+  security:
+    desc: Run security audit
+    cmds:
+      - bandit -r src/docsync

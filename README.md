@@ -67,7 +67,20 @@ docsync improve README.md --instruction "Make it sound enterprise-ready"
 ### Launch MCP Agent
 Turn your folder into a knowledge server:
 ```bash
+### Launch MCP Agent
+Turn your folder into a knowledge server:
+```bash
 docsync serve --port 8000
+```
+
+### 🛠️ Automation (Taskfile)
+We use `go-task` to standardize development commands:
+```bash
+task install   # Install dependencies
+task test      # Run tests
+task lint      # Check code quality
+task clean     # Remove cache
+task serve     # Start MCP Server
 ```
 
 ---
@@ -107,6 +120,10 @@ Contributions are welcome for:
 *   New MCP Tools
 *   Additional LLM Providers (Ollama, Groq)
 *   Integrations (Notion, Confluence)
+
+## 🛣️ Future Roadmap
+- [ ] **Performance Core:** Research migration to **Go (Golang)** for instant CLI execution (< 10ms).
+- [ ] **Cloud Sync:** Direct integration with Confluence/Notion APIs.
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) to join the swarm.
 
