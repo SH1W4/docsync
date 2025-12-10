@@ -32,3 +32,7 @@ coverage.xml
 .DS_Store
 Thumbs.db
 
+
+# Internal Strategy Docs
+MONETIZATION_STRATEGY.md
+ESTRATEGIA_MONETIZACAO_CONFIDENCIAL.md
