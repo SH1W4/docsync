@@ -7,10 +7,11 @@ on:
     branches: [ master, main ]
   release:
     types: [ created ]
+  workflow_dispatch:
 
 env:
   PYTHON_VERSION_MATRIX: "['3.9', '3.10', '3.11', '3.12']"
-  COVERAGE_THRESHOLD: 0 # Relaxed for active dev
+  COVERAGE_THRESHOLD: 80
 
 jobs:
   # 🔍 Code Quality Gate
@@ -22,12 +23,12 @@ jobs:
         uses: actions/checkout@v4
         
       - name: 🐍 Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           
       - name: 📦 Cache Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
@@ -35,97 +36,64 @@ jobs:
       - name: 🔧 Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev]"
+          pip install -e ".[dev,all]"
           
-      - name: 🎨 Code Formatting Check
-        continue-on-error: true # Allow failures
-        run: |
-          echo "🎨 Checking code formatting with Black..."
-          black --check --diff .
+      - name: 🎨 Code Formatting (Black)
+        run: black --check .
           
-      - name: 📤 Import Sorting Check
-        continue-on-error: true # Allow failures
-        run: |
-          echo "📤 Checking import organization with isort..."
-          isort --check-only --diff .
+      - name: 📤 Import Sorting (isort)
+        run: isort --check-only .
           
-      - name: 🔍 Linting
-        continue-on-error: true # Allow failures
-        run: |
-          echo "🔍 Running linting checks..."
-          echo "Running flake8..."
-          flake8 src/ tests/ --count --statistics
-          echo "Running Ruff (advanced linting)..."
-          pip install ruff
-          ruff check .
+      - name: 🔍 Linting (Ruff)
+        run: ruff check .
           
-      - name: 🛡️ Type Checking
-        continue-on-error: true # Allow failures
-        run: |
-          echo "🛡️ Running mypy type checking..."
-          mypy src/ --show-error-codes
-
+      - name: 🛡️ Type Checking (mypy)
+        run: mypy src/
+ 
   # 🧪 Test Matrix
   test-matrix:
-    name: 🧪 Tests - Python ${{ matrix.python-version }} on ${{ matrix.os }}
+    name: 🧪 Tests - ${{ matrix.python-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs: quality-gate
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest]
         python-version: ['3.9', '3.10', '3.11', '3.12']
-        exclude:
-          # Reduce matrix for faster builds
-          - os: macos-latest
-            python-version: '3.9'
-          - os: windows-latest
-            python-version: '3.9'
             
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@v4
         
       - name: 🐍 Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          
-      - name: 📦 Cache Dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-${{ matrix.python-version }}-pip-${{ hashFiles('**/pyproject.toml') }}
+          cache: 'pip'
           
       - name: 🔧 Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -e ".[dev,all]"
           
-      - name: 🧪 Run Unit Tests
-        continue-on-error: true # Allow unit tests to fail temporarily
+      - name: 🧪 Run Tests with Coverage
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TEST_TOKEN }}
+          NOTION_WORKSPACE: ${{ secrets.NOTION_TEST_WORKSPACE }}
         run: |
-          echo "🧪 Running unit tests..."
-          # Removed coverage fail-under check to prevent CI bloat
-          pytest tests/unit/ -v --cov=docsync --cov-report=xml --cov-report=term-missing
-          
-      - name: 🔗 Run Integration Tests
-        run: |
-          echo "🔗 Running integration tests..."
-          pytest tests/integration/ -v -m "integration"
+          pytest tests/ -v --cov=docsync --cov-report=xml
           
       - name: 📊 Upload Coverage
         if: matrix.python-version == '3.11' && matrix.os == 'ubuntu-latest'
-        continue-on-error: true # Codecov failure shouldn't fail build
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           file: ./coverage.xml
-          flags: unittests
-          name: codecov-umbrella
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
 
-  # 🏃‍♂️ Performance Tests
-  performance:
-    name: 🏃‍♂️ Performance Tests
+  # 🏗️ Build & Package
+  build:
+    name: 🏗️ Build & Package
     runs-on: ubuntu-latest
     needs: test-matrix
     steps:
@@ -133,81 +101,7 @@ jobs:
         uses: actions/checkout@v4
         
       - name: 🐍 Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-          
-      - name: 🔧 Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e ".[dev]"
-          pip install pytest-benchmark
-          
-      - name: 🏃‍♂️ Run Performance Tests
-        continue-on-error: true # Don't block on performance
-        run: |
-          echo "🏃‍♂️ Running performance benchmarks..."
-          pytest tests/ -v -m "performance" --benchmark-json=benchmark.json
-          
-      - name: 📊 Store Benchmark Results
-        uses: benchmark-action/github-action-benchmark@v1
-        if: github.ref == 'refs/heads/master'
-        continue-on-error: true
-        with:
-          tool: 'pytest'
-          output-file-path: benchmark.json
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          auto-push: true
-
-  # 🛡️ Security Scan
-  security:
-    name: 🛡️ Security Scan
-    runs-on: ubuntu-latest
-    needs: quality-gate
-    steps:
-      - name: 📥 Checkout Code
-        uses: actions/checkout@v4
-        
-      - name: 🐍 Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-          
-      - name: 🔧 Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e ".[dev]"
-          pip install safety bandit
-          
-      - name: 🔒 Check Dependencies for Vulnerabilities
-        continue-on-error: true # Don't block build on vulnerability check
-        run: |
-          echo "🔒 Checking dependencies for known vulnerabilities..."
-          safety check
-          
-      - name: 🛡️ Static Security Analysis
-        run: |
-          echo "🛡️ Running Bandit security analysis..."
-          bandit -r src/ -f json -o bandit-report.json
-          
-      - name: 📄 Upload Security Report
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: security-report
-          path: bandit-report.json
-
-  # 🏗️ Build & Package
-  build:
-    name: 🏗️ Build & Package
-    runs-on: ubuntu-latest
-    needs: [test-matrix, security]
-    steps:
-      - name: 📥 Checkout Code
-        uses: actions/checkout@v4
-        
-      - name: 🐍 Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           
@@ -217,62 +111,27 @@ jobs:
           pip install build twine
           
       - name: 🏗️ Build Package
-        run: |
-          echo "🏗️ Building distribution packages..."
-          python -m build
+        run: python -m build
           
       - name: 🔍 Check Package
-        run: |
-          echo "🔍 Checking package integrity..."
-          twine check dist/*
+        run: twine check dist/*
           
       - name: 📦 Upload Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dist-packages
           path: dist/
-
-  # 🐳 Docker Build
-  docker:
-    name: 🐳 Docker Build
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/master' || github.event_name == 'release'
-    steps:
-      - name: 📥 Checkout Code
-        uses: actions/checkout@v4
-        
-      - name: 🐳 Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        
-      - name: 🔑 Login to DockerHub
-        if: github.event_name == 'release'
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-          
-      - name: 🏗️ Build Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: ${{ github.event_name == 'release' }}
-          tags: |
-            neosh1w4/docsync:latest
-            neosh1w4/docsync:${{ github.ref_name }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   # 🚀 Deploy to PyPI
   deploy:
     name: 🚀 Deploy to PyPI
     runs-on: ubuntu-latest
-    needs: [build, docker]
+    needs: build
     if: github.event_name == 'release'
     environment: production
     steps:
       - name: 📥 Download Build Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: dist-packages
           path: dist/
@@ -283,28 +142,7 @@ jobs:
           password: ${{ secrets.PYPI_API_TOKEN }}
           
       - name: 📢 Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: dist/*
           generate_release_notes: true
-
-  # 📊 Metrics & Monitoring
-  metrics:
-    name: 📊 Collect Metrics
-    runs-on: ubuntu-latest
-    if: always()
-    needs: [test-matrix, performance, security]
-    steps:
-      - name: 📊 Collect Build Metrics
-        run: |
-          echo "📊 Collecting build and test metrics..."
-          echo "Build Status: ${{ needs.test-matrix.result }}"
-          echo "Performance: ${{ needs.performance.result }}"
-          echo "Security: ${{ needs.security.result }}"
-          
-      - name: 📈 Send Metrics to Monitoring
-        if: github.ref == 'refs/heads/master'
-        run: |
-          echo "📈 Sending metrics to monitoring system..."
-          # Integration with monitoring service would go here
-
