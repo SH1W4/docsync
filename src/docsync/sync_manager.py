@@ -9,13 +9,14 @@ Date: 2025-06-03
 
 import asyncio
 import hashlib
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
 from typing import Optional
 
 import aiofiles
+import aiofiles.os
 import aiogit
 from croniter import croniter
 from watchdog.events import FileSystemEventHandler
@@ -119,8 +120,17 @@ class DocumentHandler:
         pass
 
     async def _copy_file(self, source: Path, target: Path) -> None:
-        target.parent.mkdir(parents=True, exist_ok=True)
-        await aiofiles.os.copy(source, target)
+        """Copia um arquivo de forma assíncrona."""
+        try:
+            # Cria diretórios pai se necessário
+            target.parent.mkdir(parents=True, exist_ok=True)
+            
+            # Executa shutil.copy2 em um pool de threads para não bloquear o loop de eventos
+            loop = asyncio.get_event_loop()
+            await loop.run_in_executor(None, shutil.copy2, str(source), str(target))
+        except Exception as e:
+            logger.error(f"Erro ao copiar arquivo {source} -> {target}: {e}")
+            raise
 
 
 class VersionController:
@@ -216,12 +226,21 @@ class SyncManager:
 
         # Inicializa handlers de documentos
         self.doc_handlers = {
-            doc_type: DocumentHandler(handler_config)
+            doc_type: DocumentHandler(
+                asdict(handler_config)
+                if hasattr(handler_config, "__dataclass_fields__")
+                else handler_config,
+            )
             for doc_type, handler_config in self.guardrive_config.doc_handlers.items()
         }
 
         # Inicializa controle de versão
-        self.version_control = VersionController(self.guardrive_config.version_control)
+        vc_config = self.guardrive_config.version_control
+        self.version_control = VersionController(
+            asdict(vc_config)
+            if hasattr(vc_config, "__dataclass_fields__")
+            else vc_config,
+        )
 
         # Caminhos para monitoramento
         self.watch_paths = self._setup_watch_paths()
@@ -422,7 +441,7 @@ class SyncManager:
             target.mkdir(parents=True, exist_ok=True)
 
             # Lista arquivos fonte
-            async for entry in aiofiles.os.scandir(source):
+            for entry in await aiofiles.os.scandir(source):
                 if entry.is_file():
                     source_file = Path(entry.path)
                     if self._should_ignore(source_file):
@@ -433,9 +452,10 @@ class SyncManager:
                     target_file = target / relative_path
 
                     # Processa arquivo
+                    handler_key = doc_type.value if hasattr(doc_type, "value") else str(doc_type)
                     handler = self.doc_handlers.get(
-                        doc_type.value,
-                        self.doc_handlers["default"],
+                        handler_key,
+                        self.doc_handlers.get("technical", self.doc_handlers.get("default"))
                     )
                     await handler.process_file(source_file, target_file)
 

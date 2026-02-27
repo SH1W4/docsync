@@ -17,9 +17,18 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Optional
 
-from src.docsync.config import Config, load_config
-from src.docsync.sync_manager import SyncManager
-from src.docsync.utils import setup_logger
+from docsync.config import (
+    Config,
+    GuardriveConfig,
+    SyncConfig,
+    ESGConfig,
+    PathMappingConfig,
+    VersionControlConfig,
+    DocumentHandlerConfig,
+    load_config,
+)
+from docsync.sync_manager import SyncManager
+from docsync.utils import setup_logger
 
 # Configuração do logging
 logger = setup_logger(__name__)
@@ -45,6 +54,35 @@ class SyncController:
         try:
             # Carrega configuração
             config_dict = load_config(config_path)
+
+            # Converte dicionários em objetos dataclass
+            if "guardrive" in config_dict:
+                gd_dict = config_dict["guardrive"]
+                if "path_mappings" in gd_dict:
+                    gd_dict["path_mappings"] = [
+                        PathMappingConfig(**m) if isinstance(m, dict) else m
+                        for m in gd_dict["path_mappings"]
+                    ]
+                if "version_control" in gd_dict and isinstance(
+                    gd_dict["version_control"],
+                    dict,
+                ):
+                    gd_dict["version_control"] = VersionControlConfig(
+                        **gd_dict["version_control"],
+                    )
+                if "doc_handlers" in gd_dict:
+                    gd_dict["doc_handlers"] = {
+                        k: DocumentHandlerConfig(**v) if isinstance(v, dict) else v
+                        for k, v in gd_dict["doc_handlers"].items()
+                    }
+                config_dict["guardrive"] = GuardriveConfig(**gd_dict)
+
+            if "sync" in config_dict and isinstance(config_dict["sync"], dict):
+                config_dict["sync"] = SyncConfig(**config_dict["sync"])
+
+            if "esg" in config_dict and isinstance(config_dict["esg"], dict):
+                config_dict["esg"] = ESGConfig(**config_dict["esg"])
+
             self.config = Config(**config_dict)
 
             # Configura logging global

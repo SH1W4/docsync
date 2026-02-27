@@ -15,6 +15,27 @@ import yaml
 logger = logging.getLogger(__name__)
 
 
+def setup_logger(name: str) -> logging.Logger:
+    """Configura e retorna um logger formatado.
+
+    Args:
+        name: Nome do logger
+
+    Returns:
+        logging.Logger: Logger configurado
+    """
+    logger = logging.getLogger(name)
+    if not logger.handlers:
+        handler = logging.StreamHandler()
+        formatter = logging.Formatter(
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        )
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        logger.setLevel(logging.INFO)
+    return logger
+
+
 @dataclass
 class ValidationResult:
     """Resultado da validação de estrutura."""

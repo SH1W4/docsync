@@ -3,6 +3,7 @@ and registry functionality.
 """
 
 from .config import load_config
+from .common import setup_logger
 from .filter_registry import (
     FilterRegistry,
     get_registered_filters,
@@ -33,5 +34,6 @@ __all__ = [
     "get_registered_filters",
     "load_config",
     "register_filter",
+    "setup_logger",
     "to_percentage",
 ]
