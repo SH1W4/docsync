@@ -1,16 +1,17 @@
-# DocSync: Agentic Documentation Infrastructure
+# 🚀 DocSync: Enterprise Agentic Infrastructure
 
 <div align="center">
 
-![DocSync Banner](https://img.shields.io/badge/DOCSYNC-AGENTIC_DOCUMENTATION-00ff41?style=for-the-badge&logo=googledocs&logoColor=black)
+![Symbeon Labs](https://img.shields.io/badge/SYM-BEON_LABS-00ff41?style=for-the-badge&logo=symantec&logoColor=black)
+![DocSync Banner](https://img.shields.io/badge/DOCSYNC-SOVEREIGN_SYNC-black?style=for-the-badge&logo=googledocs&logoColor=00ff41)
 
-[![CI](https://github.com/SH1W4/docsync/actions/workflows/ci.yml/badge.svg)](https://github.com/SH1W4/docsync/actions)
+[![CI/CD Pipeline](https://github.com/SH1W4/docsync/actions/workflows/ci.yml/badge.svg)](https://github.com/SH1W4/docsync/actions)
 [![PyPI version](https://badge.fury.io/py/docsync.svg)](https://badge.fury.io/py/docsync)
 [![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
-[![MCP Ready](https://img.shields.io/badge/MCP-READY-00ff41)](https://modelcontextprotocol.io)
+[![Sovereign Status](https://img.shields.io/badge/STATUS-SOVEREIGN-00ff41)](https://github.com/symbeon-labs)
 
-**Turn static documentation into live, agent-readable knowledge.**
-*Synchronize, Validate, and Enforce documentation quality using LLMs.*
+**Turn static documentation into live, high-fidelity agentic knowledge.**
+*Sovereign Project Organization, AI-Enhanced Validation, and Autonomous Intelligence.*
 
 [🇧🇷 Português](./docs/pt-br/README.md) | **🇺🇸 English**
 
@@ -18,14 +19,24 @@
 
 ---
 
-## ⚡ The Problem
-In modern software development, **documentation rots faster than code**. 
-Developers hate writing it, and AI Agents hallucinate when reading outdated files.
+## ⚡ The Problem: Documentation Rot
+In the age of agents, documentation isn't just for humans anymore. **Documentation rot** crashes autonomous workflows. When your AI Agent reads outdated or disorganized files, it hallucinates, fails at execution, and breaks the chain of truth.
 
-## 🛡️ The Solution: DocSync
-**DocSync** is not just a linter. It is an **Agentic Infrastructure Tool** that treats your documentation as a living database. It sits between your codebase and your LLMs, ensuring that every Markdown file is accurate, up-to-date, and semantically structured for retrieval.
+## 🛡️ The Solution: DocSync Sovereign
+**DocSync** is an enterprise-grade synchronization and validation engine designed for the **Sovereign Architect**. It treats documentation as a living, high-integrity database, sitting between your codebase and your LLMs to enforce precision and structural purity.
 
-> "Don't let your Agent read garbage. Feed it DocSync."
+> *"Aumente o rigor. Garanta a verdade. Feed your Agent with DocSync."*
+
+---
+
+## 🏛️ Enterprise Architecture (Purified)
+DocSync has undergone a **Sovereign Root Purification**, separating core logic from auxiliary research to provide a clean, high-fidelity experience:
+
+- **`src/`**: High-performance core logic.
+- **`docs/`**: Professional documentation and quickstarts.
+- **`configs/`**: Standardized synchronization templates.
+- **`archive/`**: Preserved historical and research data.
+- **`legacy_tools/`**: Specialized maintenance scripts.
 
 ---
 
@@ -33,102 +44,61 @@ Developers hate writing it, and AI Agents hallucinate when reading outdated file
 
 ### 🔌 1. Native MCP Server (Model Context Protocol)
 DocSync exposes your entire documentation knowledge base as a structured **MCP Server**.
-*   **For Claude/Cursor:** Connect DocSync to your assistant. It can now "read", "search", and "patch" your docs autonomously.
-*   **No API Gluing:** It just works with any MCP-compliant client.
+*   **Agent Integration:** Connect DocSync to Claude, Cursor, or any MCP client for autonomous "read", "search", and "patch" operations.
+*   **Contextual Awareness:** Instantly provide your agents with the ground truth of your repository.
 
 ### 🧠 2. AI-Driven Semantic Validation
-Forget regex. DocSync uses **LLMs (OpenAI, Anthropic, Gemini)** to understand the *content* of your docs.
-*   *Does this README match what `main.py` actually does?*
-*   *Is the tone consistent across all 50 files?*
-*   *Are these installation steps actually executable?*
+DocSync uses **LLMs (OpenAI, Anthropic, Gemini)** to enforce content integrity:
+*   **Consistency:** Verify if READMEs match real code implementation.
+*   **Tone & Rigor:** Audit technical documentation for professional status and clarity.
+*   **Executability:** Ensure installation steps in docs are logically sound and reproducible.
 
-### 🔄 3. Multi-Provider Intelligence
-Agnostic by design. Swap brains on the fly:
-*   `--provider openai` (GPT-4o for deep logic)
-*   `--provider anthropic` (Claude 3.5 Sonnet for huge context windows)
-*   `--provider gemini` (Gemini Pro for speed)
+### 🔄 3. High-Stability Multi-OS Sync
+Engineered for the nomadic architect, featuring:
+*   **Win32/Linux/MacOS Harmony:** Fixed critical async file handling issues for ultimate stability across all hardware.
+*   **Thread-Safe Copying:** Robust `shutil` fallback for enterprise file operations.
+*   **Nested Config Support:** Industry-leading configuration parsing for complex organizations.
 
 ---
 
-## 🚀 Quick Start (Production Ready)
+## 🚀 Quick Start
 
 ### Installation
 ```bash
 pip install docsync
 ```
 
-### 1-Click Optimization
-Improve your README instantly using your preferred LLM:
-```bash
-export OPENAI_API_KEY="sk-..."
-docsync improve README.md --instruction "Make it sound enterprise-ready"
-```
-
-### Launch MCP Agent
-Turn your folder into a knowledge server:
-```bash
-### Launch MCP Agent
-Turn your folder into a knowledge server:
+### 1-Click Manifestation
+Turn your folder into a sovereign knowledge server instantly:
 ```bash
 docsync serve --port 8000
 ```
 
-### 🛠️ Automation (Taskfile)
-We use `go-task` to standardize development commands:
+### 🛠️ Professional CLI
 ```bash
-task install   # Install dependencies
-task test      # Run tests
-task lint      # Check code quality
-task clean     # Remove cache
-task serve     # Start MCP Server
+task install   # Zero-config setup
+task test      # High-fidelity testing
+task lint      # Structural quality audit
+task serve     # Manifest the MCP Server
 ```
 
 ---
 
-## 🏗️ Architecture & Design
-
-DocSync is built with **Resilience** and **Extensibility** in mind.
-
-*   **Core:** Python 3.9+ with strict typing (MyPy).
-*   **Interface:** Rich CLI for humans, JSON-RPC for Agents.
-*   **Pattern:** Adapter Pattern for LLMs (easy to add Llama 3 or Mistral).
-
-```mermaid
-graph LR
-    A[Human Dev] -->|CLI Commands| B[DocSync Core]
-    C[AI Agent / IDE] -->|MCP Protocol| B
-    B -->|Read/Write| D[Markdown Files]
-    B -->|Analyze| E[LLM Provider API]
-```
+## 🚀 CI/CD: Enterprise Grade
+Our pipeline enforces a **Zero-Failure Quality Gate**:
+- **Automated Matrix:** Tested on Python 3.9-3.12 across Windows and Ubuntu.
+- **Strict Linting:** Ruff, Black, and Mypy enforced at every commit.
+- **Quality Seal:** 80%+ Test coverage mandatory for production release.
 
 ---
 
-## 💼 Enterprise Use Cases
+## 🤝 Evolution & Sovereignty
+DocSync is part of the **Symbeon Labs** ecosystem, dedicated to building the infrastructure for the move to the Agentic Economy.
 
-| Persona | Benefit |
-| :--- | :--- |
-| **CTOs** | Ensure compliance and documentation standards across 100+ repos. |
-| **DevOps** | Auto-generate changelogs and deployment guides during CI/CD. |
-| **Solo Devs** | Have a "Documentation Co-pilot" that writes the boring stuff for you. |
-
----
-
-## 🤝 Contributing
-
-We are building the standard for **AI-Augmented Documentation**. 
-Contributions are welcome for:
-*   New MCP Tools
-*   Additional LLM Providers (Ollama, Groq)
-*   Integrations (Notion, Confluence)
-
-## 🛣️ Future Roadmap
-- [ ] **Performance Core:** Research migration to **Go (Golang)** for instant CLI execution (< 10ms).
-- [ ] **Cloud Sync:** Direct integration with Confluence/Notion APIs.
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md) to join the swarm.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) to join the vanguard.
 
 ---
 
 <div align="center">
-    <b>Built by <a href="https://github.com/SH1W4">SH1W4</a> // Symbeon Labs</b>
+    <b>Built by <a href="https://github.com/SH1W4">SH1W4</a> // <a href="https://github.com/symbeon-labs">Symbeon Labs</a></b>
 </div>
