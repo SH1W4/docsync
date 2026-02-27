@@ -28,4 +28,3 @@ class LLMProvider(ABC):
         Returns:
             LLMResponse containing the generated content and metadata.
         """
-        pass

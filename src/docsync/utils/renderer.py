@@ -20,7 +20,7 @@ class TemplateError(Exception):
     """Exception raised for template rendering errors."""
 
 
-class TemplateRenderer:
+class ReportRenderer:
     """Handles template rendering with custom filters."""
 
     def __init__(
@@ -115,9 +115,12 @@ class TemplateRenderer:
             return rendered
 
         except Exception as e:
+            from jinja2.exceptions import TemplateNotFound
+            if isinstance(e, TemplateNotFound):
+                raise FileNotFoundError(f"Template not found: {template_name}") from e
             logger.exception("Failed to render template %s: %s", template_name, e)
             msg = f"Failed to render template '{template_name}': {e}"
-            raise TemplateError(msg)
+            raise TemplateError(msg) from e
 
     def validate_template(self, template_name: str) -> bool:
         """Validate that a template exists and is loadable.

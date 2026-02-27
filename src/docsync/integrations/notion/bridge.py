@@ -17,8 +17,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
-from ...core.base import DocSyncError
-from ...core.sync import SyncManager
+from ...exceptions import DocSyncError
+from ...sync_manager import SyncManager
 from .client import NotionClient
 from .config import NotionConfig, NotionMapping
 
@@ -77,7 +77,7 @@ class NotionBridge:
 
         except Exception as e:
             logger.exception(
-                f"Erro ao configurar mapeamento {mapping.source_path}: {e}"
+                f"Erro ao configurar mapeamento {mapping.source_path}: {e}",
             )
             raise
 
@@ -97,7 +97,7 @@ class NotionBridge:
                     continue
 
                 rel_path = str(file.relative_to(mapping.source_path))
-                content = file.read_text()
+                content = file.read_text(encoding="utf-8")
                 file_hash = hashlib.sha256(content.encode()).hexdigest()
 
                 data["files"][rel_path] = {
@@ -109,7 +109,7 @@ class NotionBridge:
                 }
 
             # Salvar índice atualizado
-            index_file.write_text(json.dumps(data, indent=2))
+            index_file.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
         except Exception as e:
             logger.exception(f"Erro ao atualizar índice de sincronização: {e}")
@@ -152,12 +152,14 @@ class NotionBridge:
 
         except Exception as e:
             logger.exception(
-                f"Erro ao sincronizar mapeamento {mapping.source_path}: {e}"
+                f"Erro ao sincronizar mapeamento {mapping.source_path}: {e}",
             )
             raise
 
     async def _sync_local_changes(
-        self, mapping: NotionMapping, sync_data: dict
+        self,
+        mapping: NotionMapping,
+        sync_data: dict,
     ) -> None:
         """Sincroniza alterações locais para o Notion."""
         for file in mapping.source_path.glob("**/*.md"):
@@ -188,7 +190,9 @@ class NotionBridge:
                 }
 
     async def _sync_notion_changes(
-        self, mapping: NotionMapping, sync_data: dict
+        self,
+        mapping: NotionMapping,
+        sync_data: dict,
     ) -> None:
         """Sincroniza alterações do Notion para local."""
         # Obter todas as páginas do database/página alvo
@@ -222,7 +226,7 @@ class NotionBridge:
             if notion_updated > local_updated:
                 # Atualizar arquivo local
                 content = await self._convert_notion_to_markdown(page)
-                local_path.write_text(content)
+                local_path.write_text(content, encoding="utf-8")
 
                 rel_path = str(local_path.relative_to(mapping.source_path))
                 sync_data["files"][rel_path] = {
@@ -246,7 +250,10 @@ class NotionBridge:
         return page["id"]
 
     async def _update_notion_page(
-        self, page_id: str, file: Path, content_hash: str
+        self,
+        page_id: str,
+        file: Path,
+        content_hash: str,
     ) -> None:
         """Atualiza uma página existente no Notion."""
         content = file.read_text()

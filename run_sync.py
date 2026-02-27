@@ -19,12 +19,12 @@ from typing import Optional
 
 from docsync.config import (
     Config,
-    GuardriveConfig,
-    SyncConfig,
-    ESGConfig,
-    PathMappingConfig,
-    VersionControlConfig,
     DocumentHandlerConfig,
+    ESGConfig,
+    GuardriveConfig,
+    PathMappingConfig,
+    SyncConfig,
+    VersionControlConfig,
     load_config,
 )
 from docsync.sync_manager import SyncManager

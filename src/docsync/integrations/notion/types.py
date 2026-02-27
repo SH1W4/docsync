@@ -120,34 +120,17 @@ class RichText:
         )
 
 
+@dataclass
 class NotionObject:
     """Classe base para objetos Notion."""
 
     id: str
-    type: NotionObjectType
-    created_time: datetime
-    last_edited_time: datetime
-    created_by: Optional[dict[str, Any]]
-    last_edited_by: Optional[dict[str, Any]]
-    archived: bool
-
-    def __init__(
-        self,
-        id: str,
-        type: NotionObjectType = NotionObjectType.BLOCK,
-        created_time: Optional[datetime] = None,
-        last_edited_time: Optional[datetime] = None,
-        created_by: Optional[dict[str, Any]] = None,
-        last_edited_by: Optional[dict[str, Any]] = None,
-        archived: bool = False,
-    ) -> None:
-        self.id = id
-        self.type = type
-        self.created_time = created_time or datetime.now()
-        self.last_edited_time = last_edited_time or datetime.now()
-        self.created_by = created_by
-        self.last_edited_by = last_edited_by
-        self.archived = archived
+    type: NotionObjectType = NotionObjectType.BLOCK
+    created_time: datetime = field(default_factory=datetime.now)
+    last_edited_time: datetime = field(default_factory=datetime.now)
+    created_by: Optional[dict[str, Any]] = None
+    last_edited_by: Optional[dict[str, Any]] = None
+    archived: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         """Converte objeto para dicionário."""
@@ -179,41 +162,14 @@ class NotionObject:
         )
 
 
+@dataclass
 class NotionBlock(NotionObject):
     """Representa um bloco de conteúdo."""
 
-    block_type: BlockType
-    content: dict[str, Any]
-    has_children: bool
-    children: list["NotionBlock"]
-
-    def __init__(
-        self,
-        id: str,
-        block_type: BlockType,
-        content: dict[str, Any],
-        type: NotionObjectType = NotionObjectType.BLOCK,
-        created_time: Optional[datetime] = None,
-        last_edited_time: Optional[datetime] = None,
-        created_by: Optional[dict[str, Any]] = None,
-        last_edited_by: Optional[dict[str, Any]] = None,
-        archived: bool = False,
-        has_children: bool = False,
-        children: Optional[list["NotionBlock"]] = None,
-    ) -> None:
-        super().__init__(
-            id=id,
-            type=type,
-            created_time=created_time,
-            last_edited_time=last_edited_time,
-            created_by=created_by,
-            last_edited_by=last_edited_by,
-            archived=archived,
-        )
-        self.block_type = block_type
-        self.content = content
-        self.has_children = has_children
-        self.children = children or []
+    block_type: BlockType = BlockType.PARAGRAPH
+    content: dict[str, Any] = field(default_factory=dict)
+    has_children: bool = False
+    children: list["NotionBlock"] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         """Converte bloco para dicionário."""
@@ -322,9 +278,9 @@ class NotionBlock(NotionObject):
 class NotionPage(NotionObject):
     """Representa uma página no Notion."""
 
-    title: str
-    parent: dict[str, Any]
-    properties: dict[str, Any]
+    title: str = ""
+    parent: dict[str, Any] = field(default_factory=dict)
+    properties: dict[str, Any] = field(default_factory=dict)
     blocks: list[NotionBlock] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
@@ -340,9 +296,9 @@ class NotionPage(NotionObject):
 class NotionDatabase(NotionObject):
     """Representa um banco de dados no Notion."""
 
-    title: str
-    description: Optional[str]
-    properties: dict[str, Any]
+    title: str = ""
+    description: Optional[str] = None
+    properties: dict[str, Any] = field(default_factory=dict)
     pages: list[NotionPage] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:

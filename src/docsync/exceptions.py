@@ -27,3 +27,11 @@ class SyncError(DocSyncError):
 
 class FilterError(DocSyncError):
     """Erro relacionado ao processamento de filtros."""
+
+
+class ReportGenerationError(DocSyncError):
+    """Erro durante a geração de relatórios."""
+
+
+class RenderError(DocSyncError):
+    """Erro durante a renderização de documentos."""

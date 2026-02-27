@@ -48,7 +48,7 @@ import logging
 
 from .bridge import NotionBridge
 from .client import NotionClient
-from .config import NotionConfig
+from .config import NotionConfig, NotionMapping
 from .sync_monitor import NotionSyncMonitor, SyncFileHandler, SyncStats
 from .types import NotionDatabase, NotionPage
 

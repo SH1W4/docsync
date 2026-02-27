@@ -9,19 +9,20 @@ Date: 2025-06-03
 
 import asyncio
 import hashlib
+import logging
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Any
 
 import aiofiles
 import aiofiles.os
-import aiogit
 from croniter import croniter
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
+from . import aiogit
 from .config import Config, DocumentType, PathMappingConfig
 from .utils import setup_logger
 
@@ -52,16 +53,24 @@ class FileMetadata:
     status: SyncStatus
 
 
-class DocumentHandler:
+class DocumentHandler(FileSystemEventHandler):
     """Manipulador de documentos específico por tipo."""
 
-    def __init__(self, config: dict) -> None:
-        self.config = config
-        self.supported_extensions = config.get("file_extensions", [])
-        self.preserve_metadata = config.get("preserve_metadata", True)
-        self.convert_formats = config.get("convert_formats", False)
-        self.validate_links = config.get("validate_links", True)
-        self.check_references = config.get("check_references", True)
+    def __init__(self, config_or_docsync: Any, docsync: Optional[Any] = None) -> None:
+        super().__init__()
+        if hasattr(config_or_config := config_or_docsync, "config"):
+            self.docsync = config_or_config
+            self.config = config_or_config.config
+        else:
+            self.config = config_or_config
+            self.docsync = docsync
+
+        self.logger = self.docsync.logger if self.docsync else logging.getLogger(__name__)
+        self.supported_extensions = self.config.get("file_extensions", [])
+        self.preserve_metadata = self.config.get("preserve_metadata", True)
+        self.convert_formats = self.config.get("convert_formats", False)
+        self.validate_links = self.config.get("validate_links", True)
+        self.check_references = self.config.get("check_references", True)
 
     async def process_file(self, file_path: Path, target_path: Path) -> bool:
         """Processa um arquivo conforme suas configurações específicas."""
@@ -96,6 +105,18 @@ class DocumentHandler:
             logger.exception(f"Erro ao processar arquivo {file_path}: {e}")
             return False
 
+    def on_created(self, event) -> None:
+        """Chamado quando um arquivo é criado."""
+        self.logger.info(f"Arquivo criado: {event.src_path}")
+
+    def on_modified(self, event) -> None:
+        """Chamado quando um arquivo é modificado."""
+        self.logger.info(f"Arquivo modificado: {event.src_path}")
+
+    def on_deleted(self, event) -> None:
+        """Chamado quando um arquivo é deletado."""
+        self.logger.info(f"Arquivo deletado: {event.src_path}")
+
     def _is_supported_file(self, file_path: Path) -> bool:
         return file_path.suffix.lower()[1:] in self.supported_extensions
 
@@ -124,7 +145,7 @@ class DocumentHandler:
         try:
             # Cria diretórios pai se necessário
             target.parent.mkdir(parents=True, exist_ok=True)
-            
+
             # Executa shutil.copy2 em um pool de threads para não bloquear o loop de eventos
             loop = asyncio.get_event_loop()
             await loop.run_in_executor(None, shutil.copy2, str(source), str(target))
@@ -227,9 +248,11 @@ class SyncManager:
         # Inicializa handlers de documentos
         self.doc_handlers = {
             doc_type: DocumentHandler(
-                asdict(handler_config)
-                if hasattr(handler_config, "__dataclass_fields__")
-                else handler_config,
+                (
+                    asdict(handler_config)
+                    if hasattr(handler_config, "__dataclass_fields__")
+                    else handler_config
+                ),
             )
             for doc_type, handler_config in self.guardrive_config.doc_handlers.items()
         }
@@ -237,9 +260,11 @@ class SyncManager:
         # Inicializa controle de versão
         vc_config = self.guardrive_config.version_control
         self.version_control = VersionController(
-            asdict(vc_config)
-            if hasattr(vc_config, "__dataclass_fields__")
-            else vc_config,
+            (
+                asdict(vc_config)
+                if hasattr(vc_config, "__dataclass_fields__")
+                else vc_config
+            ),
         )
 
         # Caminhos para monitoramento
@@ -452,10 +477,15 @@ class SyncManager:
                     target_file = target / relative_path
 
                     # Processa arquivo
-                    handler_key = doc_type.value if hasattr(doc_type, "value") else str(doc_type)
+                    handler_key = (
+                        doc_type.value if hasattr(doc_type, "value") else str(doc_type)
+                    )
                     handler = self.doc_handlers.get(
                         handler_key,
-                        self.doc_handlers.get("technical", self.doc_handlers.get("default"))
+                        self.doc_handlers.get(
+                            "technical",
+                            self.doc_handlers.get("default"),
+                        ),
                     )
                     await handler.process_file(source_file, target_file)
 
@@ -467,5 +497,5 @@ class SyncManager:
 
         except Exception as e:
             logger.exception(
-                f"Erro ao sincronizar diretórios {source} -> {target}: {e}"
+                f"Erro ao sincronizar diretórios {source} -> {target}: {e}",
             )

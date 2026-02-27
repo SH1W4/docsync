@@ -5,7 +5,7 @@ Exemplo de uso do processador de documentos com IA do DOCSYNC.
 import logging
 from pathlib import Path
 
-from src.ai_processor import AIEnhancedMonitor, DocProcessor
+from docsync.ai_processor import AIEnhancedMonitor, DocProcessor
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)

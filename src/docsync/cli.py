@@ -62,27 +62,36 @@ def sync(path: Path, config: Optional[Path] = None) -> None:
 def improve(path: Path, provider: str, model: Optional[str]) -> None:
     """Improve documentation using AI."""
     try:
-        console.print(f"🤖 Analyzing [bold]{path.name}[/bold] with {provider}...", style="blue")
-        
+        console.print(
+            f"🤖 Analyzing [bold]{path.name}[/bold] with {provider}...",
+            style="blue",
+        )
+
         # Initialize provider
         try:
             if provider == "openai":
                 from docsync.integrations.openai_provider import OpenAIProvider
+
                 llm = OpenAIProvider(model=model or "gpt-4o-mini")
             elif provider == "claude":
                 from docsync.integrations.claude_provider import ClaudeProvider
+
                 llm = ClaudeProvider(model=model or "claude-3-5-haiku-20241022")
             elif provider == "gemini":
                 from docsync.integrations.gemini_provider import GeminiProvider
+
                 llm = GeminiProvider(model=model or "gemini-2.0-flash-exp")
         except ValueError as e:
             console.print(f"❌ Configuration Error: {e}", style="red")
-            console.print(f"💡 Tip: Set {provider.upper()}_API_KEY environment variable.", style="yellow")
+            console.print(
+                f"💡 Tip: Set {provider.upper()}_API_KEY environment variable.",
+                style="yellow",
+            )
             return
 
         # Read file
         content = path.read_text(encoding="utf-8")
-        
+
         # Generate improvement suggestions
         system_prompt = (
             "You are an expert technical writer and software engineer. "
@@ -90,13 +99,13 @@ def improve(path: Path, provider: str, model: Optional[str]) -> None:
             "Focus on clarity, completeness, and examples. "
             "Return the response in Markdown format."
         )
-        
+
         response = llm.generate(content, system_prompt=system_prompt)
-        
+
         # Display results
         console.print("\n✨ AI Suggestions:\n", style="green")
         console.print(response.content)
-        
+
         # Show usage stats
         if response.usage:
             tokens = response.usage.get("total_tokens", 0)
@@ -116,10 +125,14 @@ def improve(path: Path, provider: str, model: Optional[str]) -> None:
 def serve(path: Path) -> None:
     """Start MCP server."""
     import asyncio
+
     from docsync.mcp.server import serve as run_server
 
     try:
-        console.print(f"🔌 Starting MCP server for [bold]{path.resolve()}[/bold]...", style="blue")
+        console.print(
+            f"🔌 Starting MCP server for [bold]{path.resolve()}[/bold]...",
+            style="blue",
+        )
         asyncio.run(run_server(path))
     except Exception as e:
         console.print(f"❌ Error: {e}", style="red")
@@ -142,25 +155,34 @@ def serve(path: Path) -> None:
 def paper(path: Path, output: Path) -> None:
     """Generate Academic Paper configuration from documentation."""
     try:
-        from docsync.integrations.paper_converter import PaperConverter
         import yaml
-        
-        console.print(f"📄 Analyzing documentation in [bold]{path.resolve()}[/bold]...", style="blue")
-        
+
+        from docsync.integrations.paper_converter import PaperConverter
+
+        console.print(
+            f"📄 Analyzing documentation in [bold]{path.resolve()}[/bold]...",
+            style="blue",
+        )
+
         converter = PaperConverter(path)
         config = converter.to_config()
-        
+
         with open(output, "w", encoding="utf-8") as f:
             yaml.dump(config, f, sort_keys=False, allow_unicode=True)
-            
-        console.print(f"✅ Configuration generated: [bold]{output}[/bold]", style="green")
+
+        console.print(
+            f"✅ Configuration generated: [bold]{output}[/bold]",
+            style="green",
+        )
         console.print("\nTo generate the PDF, run:", style="dim")
-        console.print(f"  paper-gen generate {output} --template ieee", style="bold white")
-        
+        console.print(
+            f"  paper-gen generate {output} --template ieee",
+            style="bold white",
+        )
+
     except Exception as e:
         console.print(f"❌ Error: {e}", style="red")
         raise click.Abort
-
 
 
 def main() -> None:

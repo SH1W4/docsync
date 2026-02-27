@@ -8,7 +8,7 @@ from time import sleep
 import pytest
 from watchdog.observers import Observer
 
-from src.monitor import FileMonitor, MonitorConfig, create_monitor
+from docsync.monitor import FileMonitor, MonitorConfig, create_monitor
 
 
 @pytest.fixture

@@ -13,18 +13,18 @@ __email__ = "team@guardrive.io"
 
 from .core import (
     DocSync,
+)
+from .exceptions import (
     DocSyncError,
-    DocumentSynchronizer,
     ReportGenerationError,
     TemplateError,
-    generate_esg_report,
 )
+from .sync_manager import SyncManager
 
 __all__ = [
     "DocSync",
     "DocSyncError",
-    "DocumentSynchronizer",
     "ReportGenerationError",
+    "SyncManager",
     "TemplateError",
-    "generate_esg_report",
 ]

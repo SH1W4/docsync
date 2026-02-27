@@ -15,11 +15,8 @@ from watchdog.events import (
 )
 from watchdog.observers import Observer
 
-from docsync.integrations.notion import (
-    NotionBridge,
-    NotionConfig,
-    NotionMapping,
-)
+from .bridge import NotionBridge
+from .config import NotionConfig, NotionMapping
 
 
 class SyncStats:

@@ -9,7 +9,7 @@ from unittest import TestCase, main
 import yaml
 from watchdog.events import FileModifiedEvent
 
-from src.ai_processor import AIEnhancedMonitor, DocProcessor
+from docsync.ai_processor import AIEnhancedMonitor, DocProcessor
 
 
 class TestDocProcessor(TestCase):

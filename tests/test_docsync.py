@@ -3,7 +3,8 @@ import time
 import pytest
 import yaml
 
-from docsync.core import DocSync, DocSyncEventHandler
+from docsync.core import DocSync
+from docsync.sync_manager import DocumentHandler
 
 
 @pytest.fixture
@@ -24,7 +25,7 @@ def test_config():
 def test_dir(tmp_path):
     """Cria uma estrutura de diretório temporária para testes."""
     docs_dir = tmp_path / "docs"
-    templates_dir = tmp_path / "templates"
+    templates_dir = docs_dir / "templates"
 
     # Cria diretórios
     docs_dir.mkdir()
@@ -36,7 +37,7 @@ def test_dir(tmp_path):
 
     # Cria arquivo de configuração
     config_file = docs_dir / "docsync.yaml"
-    config = {"templates_path": str(templates_dir), "patterns": ["*.md", "*.rst"]}
+    config = {"templates_path": "templates", "patterns": ["*.md", "*.rst"]}
     config_file.write_text(yaml.dump(config))
 
     return docs_dir
@@ -152,7 +153,7 @@ def test_sync_documents(docsync, test_dir):
 
 def test_event_handler_initialization(docsync):
     """Testa inicialização do handler de eventos."""
-    handler = DocSyncEventHandler(docsync)
+    handler = DocumentHandler(docsync)
     assert handler.docsync == docsync
     assert handler.logger == docsync.logger
 
@@ -160,7 +161,7 @@ def test_event_handler_initialization(docsync):
 @pytest.mark.parametrize("event_type", ["created", "modified", "deleted"])
 def test_event_handler_methods(docsync, test_dir, event_type):
     """Testa métodos do handler de eventos."""
-    handler = DocSyncEventHandler(docsync)
+    handler = DocumentHandler(docsync.config, docsync=docsync)
 
     # Cria um mock de evento
     class MockEvent:

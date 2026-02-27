@@ -11,7 +11,11 @@ from docsync.core.llm import LLMProvider, LLMResponse
 class GeminiProvider(LLMProvider):
     """Google Gemini implementation of LLMProvider."""
 
-    def __init__(self, api_key: Optional[str] = None, model: str = "gemini-2.0-flash-exp"):
+    def __init__(
+        self,
+        api_key: Optional[str] = None,
+        model: str = "gemini-2.0-flash-exp",
+    ):
         """Initialize Gemini provider.
 
         Args:
@@ -21,7 +25,7 @@ class GeminiProvider(LLMProvider):
         self.api_key = api_key or os.getenv("GOOGLE_API_KEY")
         if not self.api_key:
             raise ValueError(
-                "Google API key not found. Please provide it or set GOOGLE_API_KEY environment variable."
+                "Google API key not found. Please provide it or set GOOGLE_API_KEY environment variable.",
             )
         genai.configure(api_key=self.api_key)
         self.model_name = model

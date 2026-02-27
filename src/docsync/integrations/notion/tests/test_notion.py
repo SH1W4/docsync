@@ -210,7 +210,10 @@ class TestNotionClient:
 
     @pytest.mark.asyncio
     async def test_cache_behavior(
-        self, notion_client, mock_api_response, test_data
+        self,
+        notion_client,
+        mock_api_response,
+        test_data,
     ) -> None:
         """Testa comportamento detalhado do cache."""
         responses = [
@@ -710,7 +713,10 @@ class TestIntegration:
 
     @pytest.mark.asyncio
     async def test_permission_handling(
-        self, notion_bridge, file_helper, test_data
+        self,
+        notion_bridge,
+        file_helper,
+        test_data,
     ) -> None:
         """Testa manipulação de permissões."""
         test_file = file_helper.create_markdown("test.md", "# Test\nContent")

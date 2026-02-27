@@ -1,6 +1,6 @@
 # notion_content_types.py
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Optional
 
 
@@ -10,7 +10,7 @@ class NotionBlock:
 
     type: str
     content: str
-    metadata: dict = None
+    metadata: Optional[dict] = field(default=None)
 
 
 @dataclass
@@ -45,7 +45,9 @@ class NotionCodeBlock(NotionBlock):
 
     @classmethod
     def from_markdown(
-        cls, content: str, language: Optional[str] = None
+        cls,
+        content: str,
+        language: Optional[str] = None,
     ) -> "NotionCodeBlock":
         if language and language.startswith("`"):
             language = language[3:]
@@ -84,16 +86,20 @@ class NotionCallout(NotionBlock):
 class NotionTable(NotionBlock):
     """Tabela do Notion."""
 
-    headers: list[str]
-    rows: list[list[str]]
+    headers: list[str] = field(default_factory=list)
+    rows: list[list[str]] = field(default_factory=list)
 
     @classmethod
     def from_markdown(cls, content: str) -> "NotionTable":
-        lines = content.strip().split("\\n")
-        headers = [cell.strip() for cell in lines[0].split("|")[1:-1]]
+        lines = [line.strip() for line in content.strip().split("\n") if line.strip()]
+        if not lines:
+            return cls(type="table", content="", headers=[], rows=[])
+
+        headers = [cell.strip() for cell in lines[0].split("|") if cell.strip()]
         rows = [
-            [cell.strip() for cell in line.split("|")[1:-1]]
-            for line in lines[2:]  # Skip header and separator
+            [cell.strip() for cell in line.split("|") if cell.strip()]
+            for line in lines[1:]
+            if not all(c == "-" or c == "|" or c == " " for c in line.strip())
         ]
         return cls(type="table", content="", headers=headers, rows=rows)
 

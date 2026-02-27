@@ -22,7 +22,7 @@ class OpenAIProvider(LLMProvider):
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
         if not self.api_key:
             raise ValueError(
-                "OpenAI API key not found. Please provide it or set OPENAI_API_KEY environment variable."
+                "OpenAI API key not found. Please provide it or set OPENAI_API_KEY environment variable.",
             )
         self.client = OpenAI(api_key=self.api_key)
         self.model = model
@@ -39,7 +39,7 @@ class OpenAIProvider(LLMProvider):
                 model=self.model,
                 messages=messages,
             )
-            
+
             content = response.choices[0].message.content or ""
             usage = response.usage.model_dump() if response.usage else {}
 

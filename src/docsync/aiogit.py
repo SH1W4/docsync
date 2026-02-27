@@ -1,13 +1,15 @@
 import asyncio
-from pathlib import Path
-from git import Repo
 import logging
+from pathlib import Path
+
+from git import Repo
 
 logger = logging.getLogger("aiogit-sovereign")
 
+
 class Repository:
     """Sovereign Adapter for GitPython to match aiogit interface."""
-    
+
     def __init__(self, repo_path: Path):
         self.path = Path(repo_path)
         self._repo = None
@@ -37,7 +39,7 @@ class Repository:
         """Adds all changes to the index."""
         if not self._repo:
             self._repo = Repo(self.path)
-        
+
         loop = asyncio.get_event_loop()
         await loop.run_in_executor(None, self._repo.git.add, "--all")
 
@@ -45,6 +47,6 @@ class Repository:
         """Commits changes with the given message."""
         if not self._repo:
             self._repo = Repo(self.path)
-        
+
         loop = asyncio.get_event_loop()
         await loop.run_in_executor(None, self._repo.index.commit, message)

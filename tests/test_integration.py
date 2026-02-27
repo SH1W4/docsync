@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from src.ai_processor import AIEnhancedMonitor, DocumentProcessor
+from docsync.ai_processor import AIEnhancedMonitor, DocumentProcessor
 
 
 @pytest.fixture

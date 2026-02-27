@@ -1,0 +1,50 @@
+{
+  "files": {
+    "api.md": {
+      "hash": "1b4d4df34e5b686fbb6da5730abcbc2dd49539a72b9f15fe5aab292c1a4bbaa3",
+      "last_modified": "2025-07-01T21:39:34.263058",
+      "notion_id": null
+    },
+    "ARCHITECTURE.md": {
+      "hash": "5ccd5e183f6ca6a980eb36b697576a496316cc2a9d63361c59ff25c3bc52e13b",
+      "last_modified": "2025-11-28T20:51:23.037850",
+      "notion_id": null
+    },
+    "DEPLOYMENT.md": {
+      "hash": "aade058aab4a11dcdd3b866b1aa66cd8bc51636d09fe3bc9be98352116dae573",
+      "last_modified": "2025-06-03T17:01:56.098417",
+      "notion_id": null
+    },
+    "documentation.md": {
+      "hash": "35006ef60f7d6585a009ff45fb5b3b37e2fbbb05745c7b02678abf30c6bc7a55",
+      "last_modified": "2025-07-01T21:40:18.065201",
+      "notion_id": null
+    },
+    "GITHUB_PAGES_SETUP.md": {
+      "hash": "ba8265b26e67cd3e6b5eed660b72620913dcb4763896accce602426fa4bdf46d",
+      "last_modified": "2025-07-01T21:41:26.184706",
+      "notion_id": null
+    },
+    "index.md": {
+      "hash": "57a13b0b77d96000006ff1993a48b8bf96359f64b7c44825c3fd3795a92669c5",
+      "last_modified": "2025-07-01T21:39:12.446480",
+      "notion_id": null
+    },
+    "QUICKSTART.md": {
+      "hash": "c1068928adb9d577ed83c0a37bcdb6146766641e8f77410f4cc14f226ed5517d",
+      "last_modified": "2025-07-01T15:14:56.867999",
+      "notion_id": null
+    },
+    "pt-br\\CONTRIBUTING.md": {
+      "hash": "f7a61bb312c48f367e1a97d4e7d6beb51c90ac5065be4eb38bd88352053b1272",
+      "last_modified": "2025-06-03T17:48:23.170140",
+      "notion_id": null
+    },
+    "pt-br\\README.md": {
+      "hash": "f0a2d1804e1d4c3f2886c3e82249bf4ef266d1807343fb972e506970875ffae8",
+      "last_modified": "2025-07-01T19:58:28.964254",
+      "notion_id": null
+    }
+  },
+  "last_sync": null
+}

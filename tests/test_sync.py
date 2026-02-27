@@ -21,8 +21,8 @@ from unittest.mock import patch
 
 import pytest
 
-from src.docsync.config import Config, DocumentType, load_config
-from src.docsync.sync_manager import (
+from docsync.config import Config, DocumentType, load_config
+from docsync.sync_manager import (
     DocumentHandler,
     SyncManager,
     VersionController,

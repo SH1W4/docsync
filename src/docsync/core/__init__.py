@@ -1,12 +1,11 @@
 """Core functionality for DocSync system."""
 
-from .base import (
+from ..exceptions import (
     DocSyncError,
-    DocumentSynchronizer,
     ReportGenerationError,
     TemplateError,
-    generate_esg_report,
 )
+from .base import DocumentSynchronizer
 from .sync import DocSync
 
 __all__ = [
@@ -15,5 +14,4 @@ __all__ = [
     "DocumentSynchronizer",
     "ReportGenerationError",
     "TemplateError",
-    "generate_esg_report",
 ]

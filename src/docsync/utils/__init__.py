@@ -2,8 +2,8 @@
 and registry functionality.
 """
 
-from .config import load_config
 from .common import setup_logger
+from .config import load_config
 from .filter_registry import (
     FilterRegistry,
     get_registered_filters,
@@ -20,10 +20,12 @@ from .filters import (
     format_version,
     to_percentage,
 )
+from .renderer import ReportRenderer
 
 __all__ = [
     "FILTERS",
     "FilterRegistry",
+    "ReportRenderer",
     "format_date",
     "format_esg_metric",
     "format_metric",

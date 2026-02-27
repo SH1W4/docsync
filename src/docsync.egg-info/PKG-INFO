@@ -1,395 +1,158 @@
 Metadata-Version: 2.4
 Name: docsync
-Version: 1.0.0
-Summary: Sistema quântico de sincronização de documentação com Notion
-Home-page: https://github.com/guardrive/docsync
-Author: GUARDRIVE Team
-Author-email: dev@guardrive.com
-License: MIT
-Project-URL: Bug Reports, https://github.com/guardrive/docsync/issues
-Project-URL: Source, https://github.com/guardrive/docsync
-Project-URL: Documentation, https://docsync.guardrive.dev
-Project-URL: Changelog, https://github.com/guardrive/docsync/blob/main/CHANGELOG.md
-Keywords: notion sync markdown documentation quantum
+Version: 0.2.0
+Summary: 🚀 Advanced technical documentation synchronization system with AI-enhanced processing, bidirectional Notion sync, and professional ESG reporting templates. Built for the global developer community.
+Author-email: NEO-SH1W4 <contato@example.com>
+Project-URL: Homepage, https://github.com/NEO-SH1W4/docsync
+Project-URL: Documentation, https://github.com/NEO-SH1W4/docsync#readme
+Project-URL: Repository, https://github.com/NEO-SH1W4/docsync
+Project-URL: Bug Tracker, https://github.com/NEO-SH1W4/docsync/issues
+Project-URL: Changelog, https://github.com/NEO-SH1W4/docsync/blob/main/CHANGELOG.md
+Keywords: documentation,sync,notion,markdown,automation,technical-writing
 Classifier: Development Status :: 4 - Beta
 Classifier: Intended Audience :: Developers
-Classifier: Topic :: Software Development :: Documentation
-Classifier: Topic :: Software Development :: Libraries :: Python Modules
-Classifier: Topic :: System :: Filesystems
-Classifier: Topic :: System :: Monitoring
 Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
 Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3.9
 Classifier: Programming Language :: Python :: 3.10
 Classifier: Programming Language :: Python :: 3.11
-Classifier: Operating System :: OS Independent
-Classifier: Framework :: AsyncIO
-Classifier: Environment :: Console
-Classifier: Natural Language :: Portuguese (Brazilian)
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Documentation
+Classifier: Topic :: Software Development :: Documentation
+Classifier: Topic :: Text Processing :: Markup :: Markdown
 Requires-Python: >=3.9
 Description-Content-Type: text/markdown
-Requires-Dist: aiohttp==3.8.5
-Requires-Dist: pydantic==2.0.3
-Requires-Dist: watchdog==3.0.0
-Requires-Dist: python-dotenv==1.0.0
-Requires-Dist: rich==13.4.2
-Requires-Dist: colorama==0.4.4
-Requires-Dist: click==8.1.3
-Requires-Dist: cachetools==5.3.1
-Requires-Dist: typing-extensions==4.7.1
-Requires-Dist: Markdown==3.3.7
-Requires-Dist: pyyaml==6.0.0
-Requires-Dist: jinja2==3.0.0
-Requires-Dist: aiofiles==0.8.0
-Requires-Dist: requests==2.31.0
-Requires-Dist: tqdm==4.65.0
-Requires-Dist: pytest==7.4.0
-Requires-Dist: pytest-asyncio==0.21.1
-Requires-Dist: pytest-cov==4.1.0
-Requires-Dist: pytest-mock==3.11.1
-Requires-Dist: aioresponses==0.7.4
-Requires-Dist: coverage==7.2.7
-Requires-Dist: codecov==2.1.13
-Requires-Dist: pytest-xdist==3.3.1
-Requires-Dist: pytest-github-actions-annotate-failures==0.2.0
+License-File: LICENSE
+Requires-Dist: click>=8.0.0
+Requires-Dist: rich>=13.0.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: aiohttp>=3.8.0
+Requires-Dist: jinja2>=3.1.0
+Requires-Dist: markdown>=3.4.0
+Requires-Dist: watchdog>=3.0.0
+Requires-Dist: openai>=1.0.0
+Requires-Dist: mcp>=0.1.0
+Requires-Dist: anthropic>=0.18.0
+Requires-Dist: google-generativeai>=0.3.0
 Provides-Extra: dev
-Requires-Dist: ipython==8.14.0; extra == "dev"
-Requires-Dist: jupyter==1.0.0; extra == "dev"
-Requires-Dist: debugpy==1.6.7; extra == "dev"
-Requires-Dist: pip-tools==7.1.0; extra == "dev"
-Requires-Dist: mkdocs==1.4.3; extra == "dev"
-Requires-Dist: mkdocs-material==9.1.18; extra == "dev"
-Requires-Dist: mkdocstrings==0.22.0; extra == "dev"
-Requires-Dist: mkdocstrings-python==1.1.2; extra == "dev"
-Requires-Dist: memory-profiler==0.61.0; extra == "dev"
-Requires-Dist: line-profiler==4.0.3; extra == "dev"
-Requires-Dist: pyinstrument==4.5.1; extra == "dev"
-Requires-Dist: black==23.7.0; extra == "dev"
-Requires-Dist: isort==5.12.0; extra == "dev"
-Requires-Dist: flake8==6.0.0; extra == "dev"
-Requires-Dist: flake8-docstrings==1.7.0; extra == "dev"
-Requires-Dist: mypy==1.4.1; extra == "dev"
-Requires-Dist: bandit==1.7.5; extra == "dev"
-Requires-Dist: vulture==2.7; extra == "dev"
-Requires-Dist: pytest-sugar==0.9.7; extra == "dev"
-Requires-Dist: pytest-watch==4.2.0; extra == "dev"
-Requires-Dist: pytest-clarity==1.0.1; extra == "dev"
-Provides-Extra: docs
-Requires-Dist: mkdocs==1.4.3; extra == "docs"
-Requires-Dist: mkdocs-material==9.1.18; extra == "docs"
-Requires-Dist: mkdocstrings==0.22.0; extra == "docs"
-Requires-Dist: mkdocstrings-python==1.1.2; extra == "docs"
-Provides-Extra: test
-Requires-Dist: pytest==7.4.0; extra == "test"
-Requires-Dist: pytest-asyncio==0.21.1; extra == "test"
-Requires-Dist: pytest-cov==4.1.0; extra == "test"
-Requires-Dist: pytest-mock==3.11.1; extra == "test"
-Requires-Dist: aioresponses==0.7.4; extra == "test"
-Provides-Extra: lint
-Requires-Dist: black==23.7.0; extra == "lint"
-Requires-Dist: isort==5.12.0; extra == "lint"
-Requires-Dist: flake8==6.0.0; extra == "lint"
-Requires-Dist: mypy==1.4.1; extra == "lint"
-Dynamic: author
-Dynamic: author-email
-Dynamic: classifier
-Dynamic: description
-Dynamic: description-content-type
-Dynamic: home-page
-Dynamic: keywords
-Dynamic: license
-Dynamic: project-url
-Dynamic: provides-extra
-Dynamic: requires-dist
-Dynamic: requires-python
-Dynamic: summary
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
+Requires-Dist: flake8>=6.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Requires-Dist: pre-commit>=3.0.0; extra == "dev"
+Requires-Dist: autoflake>=2.0.0; extra == "dev"
+Provides-Extra: notion
+Requires-Dist: notion-client>=2.0.0; extra == "notion"
+Provides-Extra: all
+Requires-Dist: docsync[dev,notion]; extra == "all"
+Dynamic: license-file
 
-# DOCSYNC
+# 🚀 DocSync: Enterprise Agentic Infrastructure
 
-Sistema de sincronizaÃ§Ã£o bidirecional entre arquivos locais e Notion.
+<div align="center">
 
-## InstalaÃ§Ã£o
+![Symbeon Labs](https://img.shields.io/badge/SYM-BEON_LABS-00ff41?style=for-the-badge&logo=symantec&logoColor=black)
+![DocSync Banner](https://img.shields.io/badge/DOCSYNC-SOVEREIGN_SYNC-black?style=for-the-badge&logo=googledocs&logoColor=00ff41)
 
-1. Ambiente de desenvolvimento:
+[![CI/CD Pipeline](https://github.com/SH1W4/docsync/actions/workflows/ci.yml/badge.svg)](https://github.com/SH1W4/docsync/actions)
+[![PyPI version](https://badge.fury.io/py/docsync.svg)](https://badge.fury.io/py/docsync)
+[![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
+[![Sovereign Status](https://img.shields.io/badge/STATUS-SOVEREIGN-00ff41)](https://github.com/symbeon-labs)
+
+**Turn static documentation into live, high-fidelity agentic knowledge.**
+*Sovereign Project Organization, AI-Enhanced Validation, and Autonomous Intelligence.*
+
+[🇧🇷 Português](./docs/pt-br/README.md) | **🇺🇸 English**
+
+</div>
+
+---
+
+## ⚡ The Problem: Documentation Rot
+In the age of agents, documentation isn't just for humans anymore. **Documentation rot** crashes autonomous workflows. When your AI Agent reads outdated or disorganized files, it hallucinates, fails at execution, and breaks the chain of truth.
+
+## 🛡️ The Solution: DocSync Sovereign
+**DocSync** is an enterprise-grade synchronization and validation engine designed for the **Sovereign Architect**. It treats documentation as a living, high-integrity database, sitting between your codebase and your LLMs to enforce precision and structural purity.
+
+> *"Aumente o rigor. Garanta a verdade. Feed your Agent with DocSync."*
+
+---
+
+## 🏛️ Enterprise Architecture (Purified)
+DocSync has undergone a **Sovereign Root Purification**, separating core logic from auxiliary research to provide a clean, high-fidelity experience:
+
+- **`src/`**: High-performance core logic.
+- **`docs/`**: Professional documentation and quickstarts.
+- **`configs/`**: Standardized synchronization templates.
+- **`archive/`**: Preserved historical and research data.
+- **`legacy_tools/`**: Specialized maintenance scripts.
+
+---
+
+## 🔥 Key Capabilities
+
+### 🔌 1. Native MCP Server (Model Context Protocol)
+DocSync exposes your entire documentation knowledge base as a structured **MCP Server**.
+*   **Agent Integration:** Connect DocSync to Claude, Cursor, or any MCP client for autonomous "read", "search", and "patch" operations.
+*   **Contextual Awareness:** Instantly provide your agents with the ground truth of your repository.
+
+### 🧠 2. AI-Driven Semantic Validation
+DocSync uses **LLMs (OpenAI, Anthropic, Gemini)** to enforce content integrity:
+*   **Consistency:** Verify if READMEs match real code implementation.
+*   **Tone & Rigor:** Audit technical documentation for professional status and clarity.
+*   **Executability:** Ensure installation steps in docs are logically sound and reproducible.
+
+### 🔄 3. High-Stability Multi-OS Sync
+Engineered for the nomadic architect, featuring:
+*   **Win32/Linux/MacOS Harmony:** Fixed critical async file handling issues for ultimate stability across all hardware.
+*   **Thread-Safe Copying:** Robust `shutil` fallback for enterprise file operations.
+*   **Nested Config Support:** Industry-leading configuration parsing for complex organizations.
+
+---
+
+## 🚀 Quick Start
+
+### Installation
 ```bash
-python -m venv venv
-source venv/bin/activate  # Linux/macOS
-# ou
-.\venv\Scripts\activate  # Windows
-
-# Instalar dependÃªncias de desenvolvimento
-pip install -r requirements-dev.txt
-```
-
-2. Ambiente de produÃ§Ã£o:
-```bash
-pip install -r requirements.txt
-```
-
-## Testes
-
-Execute os testes com:
-```bash
-pytest
-```
-
-Para verificar cobertura:
-```bash
-pytest --cov=docsync
-```
-
-## Qualidade de CÃ³digo
-
-1. FormataÃ§Ã£o:
-```bash
-black .
-isort .
-```
-
-2. VerificaÃ§Ã£o:
-```bash
-flake8
-mypy .
-```
-
-## Contribuindo
-
-1. Certifique-se de ter todas as dependÃªncias de desenvolvimento instaladas
-2. Execute os testes antes de submeter alteraÃ§Ãµes
-3. Mantenha 100% de cobertura de testes
-4. Siga as convenÃ§Ãµes de cÃ³digo do projeto
-
-# Notion Integration Guide
-
-## Overview
-
-A integraÃ§Ã£o DOCSYNC-Notion permite sincronizaÃ§Ã£o bidirecional entre seus documentos locais e o Notion, oferecendo:
-
-- SincronizaÃ§Ã£o automÃ¡tica de documentaÃ§Ã£o
-- Versionamento unificado
-- AnÃ¡lise de qualidade em tempo real
-- Backup automatizado
-- ColaboraÃ§Ã£o aprimorada
-
-## ConfiguraÃ§Ã£o
-
-1. **Token do Notion**
-   - Acesse https://www.notion.so/my-integrations
-   - Crie uma nova integraÃ§Ã£o
-   - Copie o token gerado
-
-2. **ConfiguraÃ§Ã£o BÃ¡sica**
-   `ash
-   # Inicializar configuraÃ§Ã£o
-   python examples/notion/notion_cli.py init --token seu_token_aqui
-
-   # Edite o arquivo notion_config.json gerado
-   `
-
-3. **Estrutura do notion_config.json**
-   `json
-   {
-     'token': 'seu_token_aqui',
-     'workspace_id': 'seu_workspace_id',
-     'mappings': [
-       {
-         'source_path': './docs/technical',
-         'target_id': 'id_database_notion',
-         'sync_type': 'bidirectional'
-       }
-     ],
-     'sync_interval': 300,
-     'max_retries': 3,
-     'retry_delay': 60
-   }
-   `
-
-## Uso
-
-1. **SincronizaÃ§Ã£o via CLI**
-   `ash
-   # Sincronizar usando arquivo de configuraÃ§Ã£o
-   python examples/notion/notion_cli.py sync -c notion_config.json
-
-   # SincronizaÃ§Ã£o direta
-   python examples/notion/notion_cli.py sync --token seu_token --source ./docs --target id_database
-   `
-
-2. **SincronizaÃ§Ã£o ProgramÃ¡tica**
-   `python
-   from docsync.integrations.notion import NotionBridge, NotionConfig, NotionMapping
-   from pathlib import Path
-
-   config = NotionConfig(
-       token='seu_token',
-       workspace_id='seu_workspace',
-       mappings=[
-           NotionMapping(
-               source_path=Path('./docs'),
-               target_id='id_database'
-           )
-       ]
-   )
-
-   bridge = NotionBridge(config)
-   await bridge.initialize()
-   await bridge.sync()
-   `
-
-## Monitoramento ContÃ­nuo
-
-Para manter a sincronizaÃ§Ã£o contÃ­nua:
-
-`ash
-# Usar o exemplo de sincronizaÃ§Ã£o contÃ­nua
-python examples/notion/notion_sync_example.py
-`
-
-## Recursos AvanÃ§ados
-
-1. **Filtragem de ConteÃºdo**
-   `python
-   NotionMapping(
-       source_path=Path('./docs'),
-       target_id='id_database',
-       filters=['*.md', '!temp/*']
-   )
-   `
-
-2. **Tipos de SincronizaÃ§Ã£o**
-   - bidirectional: Sincroniza em ambas as direÃ§Ãµes
-   - push: Apenas envia para o Notion
-   - pull: Apenas recebe do Notion
-
-## Troubleshooting
-
-1. **Verificar ConfiguraÃ§Ã£o**
-   `ash
-   python examples/notion/notion_cli.py validate -c notion_config.json
-   `
-
-2. **Logs**
-   - Os logs sÃ£o salvos em .notion_sync em cada diretÃ³rio mapeado
-   - Use --verbose para mais detalhes durante a sincronizaÃ§Ã£o
-
-## Boas PrÃ¡ticas
-
-1. **Estrutura de DiretÃ³rios**
-   - Mantenha uma estrutura clara e organizada
-   - Use subdiretÃ³rios para diferentes tipos de documentaÃ§Ã£o
-
-2. **Versionamento**
-   - Mantenha o arquivo .notion_sync no controle de versÃ£o
-   - NÃ£o compartilhe tokens de acesso
-
-3. **Backup**
-   - A integraÃ§Ã£o mantÃ©m backups automÃ¡ticos
-   - Configure ackup_interval conforme necessidade
-
-## LimitaÃ§Ãµes
-
-1. **Rate Limits**
-   - A API do Notion tem limites de requisiÃ§Ã£o
-   - A integraÃ§Ã£o gerencia automaticamente os limites
-
-2. **Formatos Suportados**
-   - Markdown (*.md)
-   - Futuramente: RST, AsciiDoc
-
-## IntegraÃ§Ã£o com CI/CD
-
-Exemplo de uso em pipeline CI/CD:
-
-`yaml
-jobs:
-  sync-docs:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-      - run: pip install -r requirements.txt
-      - run: python examples/notion/notion_cli.py sync -c notion_config.json
-        env:
-          NOTION_TOKEN: 
-`
-"@ | Out-File -Encoding utf8 examples\notion\GUIDE.md
-
-@"
-# DOCSYNC
-
-Sistema avanÃ§ado de sincronizaÃ§Ã£o e gerenciamento de documentaÃ§Ã£o tÃ©cnica.
-
-## Novidade: IntegraÃ§Ã£o com Notion! ðŸŽ‰
-
-Agora o DOCSYNC oferece integraÃ§Ã£o completa com o Notion, permitindo:
-- SincronizaÃ§Ã£o bidirecional de documentaÃ§Ã£o
-- AnÃ¡lise de qualidade em tempo real
-- Versionamento unificado
-- ColaboraÃ§Ã£o aprimorada
-
-[Veja o guia completo da integraÃ§Ã£o com Notion](examples/notion/GUIDE.md)
-
-## Recursos Principais
-
-- SincronizaÃ§Ã£o inteligente de documentaÃ§Ã£o
-- Processamento AI-enhanced de documentos
-- IntegraÃ§Ã£o com mÃºltiplas plataformas
-- Sistema de templates flexÃ­vel
-- AnÃ¡lise de qualidade automÃ¡tica
-- Versionamento robusto
-
-## IntegraÃ§Ãµes Suportadas
-
-- Notion (Nova!)
-- Git Repositories
-- Markdown Files
-- API Documentation
-- Technical Specifications
-
-## InstalaÃ§Ã£o
-
-`ash
 pip install docsync
-`
+```
 
-## Uso RÃ¡pido
+### 1-Click Manifestation
+Turn your folder into a sovereign knowledge server instantly:
+```bash
+docsync serve --port 8000
+```
 
-1. **ConfiguraÃ§Ã£o BÃ¡sica**
-   `python
-   from docsync import DocSync
-   
-   sync = DocSync()
-   sync.configure()
-   `
+### 🛠️ Professional CLI
+```bash
+task install   # Zero-config setup
+task test      # High-fidelity testing
+task lint      # Structural quality audit
+task serve     # Manifest the MCP Server
+```
 
-2. **SincronizaÃ§Ã£o com Notion**
-   `python
-   from docsync.integrations.notion import NotionBridge, NotionConfig
-   
-   config = NotionConfig(token='seu_token', workspace_id='seu_workspace')
-   bridge = NotionBridge(config)
-   await bridge.sync()
-   `
+---
 
-3. **Processamento de Documentos**
-   `python
-   from docsync import DocumentProcessor
-   
-   processor = DocumentProcessor()
-   analysis = processor.analyze_document('doc.md')
-   `
+## 🚀 CI/CD: Enterprise Grade
+Our pipeline enforces a **Zero-Failure Quality Gate**:
+- **Automated Matrix:** Tested on Python 3.9-3.12 across Windows and Ubuntu.
+- **Strict Linting:** Ruff, Black, and Mypy enforced at every commit.
+- **Quality Seal:** 80%+ Test coverage mandatory for production release.
 
-## DocumentaÃ§Ã£o
+---
 
-- [Guia de InÃ­cio RÃ¡pido](docs/quickstart.md)
-- [IntegraÃ§Ã£o com Notion](examples/notion/GUIDE.md)
-- [DocumentaÃ§Ã£o Completa](docs/index.md)
-- [Exemplos](examples/)
+## 🤝 Evolution & Sovereignty
+DocSync is part of the **Symbeon Labs** ecosystem, dedicated to building the infrastructure for the move to the Agentic Economy.
 
-## ContribuiÃ§Ã£o
+See [CONTRIBUTING.md](./CONTRIBUTING.md) to join the vanguard.
 
-ContribuiÃ§Ãµes sÃ£o bem-vindas! Veja nosso [Guia de ContribuiÃ§Ã£o](CONTRIBUTING.md).
+---
 
-## LicenÃ§a
-
-MIT License - veja [LICENSE](LICENSE) para mais detalhes.
+<div align="center">
+    <b>Built by <a href="https://github.com/SH1W4">SH1W4</a> // <a href="https://github.com/symbeon-labs">Symbeon Labs</a></b>
+</div>

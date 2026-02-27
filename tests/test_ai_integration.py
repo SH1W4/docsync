@@ -44,7 +44,7 @@ def test_openai_provider_generate(mock_openai_client):
     assert isinstance(response, LLMResponse)
     assert response.content == "Test content"
     assert response.usage == {"total_tokens": 10}
-    
+
     # Verify API call
     mock_openai_client.chat.completions.create.assert_called_once()
     call_kwargs = mock_openai_client.chat.completions.create.call_args.kwargs
@@ -66,7 +66,7 @@ def test_cli_improve_command(mock_openai_client, tmp_path):
     test_file.write_text("# Test\nContent")
 
     runner = CliRunner()
-    
+
     # Mock environment variable for API key
     with patch.dict("os.environ", {"OPENAI_API_KEY": "test-key"}):
         result = runner.invoke(improve, [str(test_file)])
@@ -80,12 +80,11 @@ def test_cli_improve_command(mock_openai_client, tmp_path):
 def test_cli_improve_no_api_key():
     """Test 'improve' CLI command without API key."""
     runner = CliRunner()
-    with patch.dict("os.environ", {}, clear=True):
-        with runner.isolated_filesystem():
-            with open("test.md", "w") as f:
-                f.write("content")
-            
-            result = runner.invoke(improve, ["test.md"])
-            
+    with patch.dict("os.environ", {}, clear=True), runner.isolated_filesystem():
+        with open("test.md", "w") as f:
+            f.write("content")
+
+        result = runner.invoke(improve, ["test.md"])
+
     assert "Configuration Error" in result.output
     assert "Set OPENAI_API_KEY" in result.output

@@ -12,7 +12,11 @@ from docsync.core.llm import LLMProvider, LLMResponse
 class ClaudeProvider(LLMProvider):
     """Anthropic Claude implementation of LLMProvider."""
 
-    def __init__(self, api_key: Optional[str] = None, model: str = "claude-3-5-haiku-20241022"):
+    def __init__(
+        self,
+        api_key: Optional[str] = None,
+        model: str = "claude-3-5-haiku-20241022",
+    ):
         """Initialize Claude provider.
 
         Args:
@@ -22,7 +26,7 @@ class ClaudeProvider(LLMProvider):
         self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY")
         if not self.api_key:
             raise ValueError(
-                "Anthropic API key not found. Please provide it or set ANTHROPIC_API_KEY environment variable."
+                "Anthropic API key not found. Please provide it or set ANTHROPIC_API_KEY environment variable.",
             )
         self.client = Anthropic(api_key=self.api_key)
         self.model = model
@@ -41,7 +45,8 @@ class ClaudeProvider(LLMProvider):
             usage = {
                 "input_tokens": response.usage.input_tokens,
                 "output_tokens": response.usage.output_tokens,
-                "total_tokens": response.usage.input_tokens + response.usage.output_tokens,
+                "total_tokens": response.usage.input_tokens
+                + response.usage.output_tokens,
             }
 
             return LLMResponse(
